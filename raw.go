@@ -39,6 +39,11 @@ command:
         - go env
 `
 
+var firstRunHelp = `第一次运行 fileboy ?
+你可能需要先执行 fileboy init 生成配置。
+更多信息查看帮助:
+`
+
 var helpStr = `fileboy [option]
 Usage of fileboy:
     无参数 

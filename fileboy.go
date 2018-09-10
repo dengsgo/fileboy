@@ -195,6 +195,13 @@ func initWatcher() {
 func parseArgs() {
 	l := len(os.Args)
 	if l == 1 {
+		_, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
+		if err != nil {
+			log.Println("the filegirl.yaml file is not exist! ", err)
+			fmt.Print(firstRunHelp)
+			fmt.Print(helpStr)
+			return
+		}
 		initWatcher()
 		return
 	}
