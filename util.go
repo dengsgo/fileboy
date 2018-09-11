@@ -55,12 +55,18 @@ func arrayUniqueAdd(a []string, add string) []string {
 }
 
 func arrayRemoveElement(a []string, r string) []string {
-	i := 0
+	i := -1
 	for k, v := range a {
 		if v == r {
 			i = k
 			break
 		}
+	}
+	if i == -1 {
+		return a
+	}
+	if len(a) == 1 && i == 0 {
+		return []string{}
 	}
 	return append(a[:i], a[i+1:]...)
 }
