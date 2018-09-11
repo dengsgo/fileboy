@@ -12,7 +12,7 @@ go version >=1.10
 
 ### 下载二进制文件   
 
-[正式版 v1.0](https://github.com/dengsgo/fileboy/releases)  
+[正式版 v1.0](https://gitee.com/dengsgo/fileboy/releases)
 
 直接下载已经编译好的对应平台二进制文件，加入系统 Path 中即可。 
 
