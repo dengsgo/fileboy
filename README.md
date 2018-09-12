@@ -42,7 +42,7 @@ fileboy 的正常运行依赖于 `filegirl.yaml` 配置，所以首次在项目�
 
 - 运行 `fileboy`即可.  
 
-  如果你定义了 `commend -> exec`命令，想事先确认是否能正常执行，可以运行 `fileboy exec`命令，系统会尝试运行你的自定义命令。  
+  如果你定义了 `command -> exec`命令，想事先确认是否能正常执行，可以运行 `fileboy exec`命令，系统会尝试运行你的自定义命令。  
 
 你可以使用 `fileboy help`查看使用帮助。  
 
@@ -71,9 +71,9 @@ monitor:
         - .git
         - .vscode
 
-    # 监听文件的格式，此类文件更改会执行 commend 中的命令
-    # .go   后缀为 .go 的文件更改，会执行 commend 中的命令
-    # .*    所有的文件更改都会执行 commend 中的命令
+    # 监听文件的格式，此类文件更改会执行 command 中的命令
+    # .go   后缀为 .go 的文件更改，会执行 command 中的命令
+    # .*    所有的文件更改都会执行 command 中的命令
     types:
         - .go
 
@@ -98,17 +98,17 @@ command:
 
 在开发中，我们很需要一款可以帮助我们自动打包编译的工具，那 fileboy 就非常适合这样的场景。比如 go 项目的热编译，让我们可以边修改代码边运行得到反馈。又比如 PHP Swoole 框架，由于常驻进程的原因，无法更改代码立即reload，使用 fileboy 就可以辅助做到传统 PHP 开发的体验。  
 
-对于一些需要监控文件日志或者配置变动的场景， fileboy 同样适合。你可以事先编写好相应的通知报警脚本，然后定义`filegirl.yaml`中的`commend`命令，交由 fileboy 自动运行监控报警。  
+对于一些需要监控文件日志或者配置变动的场景， fileboy 同样适合。你可以事先编写好相应的通知报警脚本，然后定义`filegirl.yaml`中的`command`命令，交由 fileboy 自动运行监控报警。  
 
-#### idea 下更改文件，为什么会执行两次或者多次 commend ?
+#### idea 下更改文件，为什么会执行两次或者多次 command ?
 
 由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。这个后续会做优化.  
 
-#### filegirl.yaml 里面的 commend 不支持复杂的命令吗？  
+#### filegirl.yaml 里面的 command 不支持复杂的命令吗？  
 
 对于“很复杂的命令”这种说法很难去定义，比如 `echo "hello world"`并不复杂，但是对于 fileboy 来讲，目前无法解析这种命令。  
 
-fileboy 目前支持 `命令 + 参数`这种形式的 commend，而且 参数中不能有""符号或者有空格。如：  
+fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中不能有""符号或者有空格。如：  
 
 `go build`:支持；  
 
@@ -118,7 +118,7 @@ fileboy 目前支持 `命令 + 参数`这种形式的 commend，而且 参数中
 
 `cat a.txt | grep "q" | wc -l`:不支持  
 
-对于不支持的命令，可以把它写到一个文件里，然后在 commend 中执行这个文件来解决。  
+对于不支持的命令，可以把它写到一个文件里，然后在 command 中执行这个文件来解决。  
 
 #### 为什么起名为 fileboy，又把配置名叫做 filegirl ？
 
