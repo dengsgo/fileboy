@@ -22,9 +22,9 @@ monitor:
         - .git
         - .vscode
 
-    # 监听文件的格式，此类文件更改会执行 commend 中的命令
-    # .go   后缀为 .go 的文件更改，会执行 commend 中的命令
-    # .*    所有的文件更改都会执行 commend 中的命令
+    # 监听文件的格式，此类文件更改会执行 command 中的命令
+    # .go   后缀为 .go 的文件更改，会执行 command 中的命令
+    # .*    所有的文件更改都会执行 command 中的命令
     types:
         - .go
 
@@ -51,7 +51,7 @@ Usage of fileboy:
     init 
         初始化 fileboy, 在当前目录生成 filegirl.yaml 配置文件
     exec 
-        尝试运行定义的 commend 命令
+        尝试运行定义的 command 命令
 `
 
 var englishSay = []string{
