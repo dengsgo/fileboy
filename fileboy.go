@@ -117,6 +117,7 @@ func run() {
 }
 
 func addWatcher() {
+	log.Println("collecting directory information...")
 	dirs := make([]string, 0)
 	for i := 0; i < len(cfg.Monitor.IncludeDirs); i++ {
 		darr := dirParse2Array(cfg.Monitor.IncludeDirs[i])
