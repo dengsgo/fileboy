@@ -70,6 +70,8 @@ monitor:
         - .idea
         - .git
         - .vscode
+        - node_modules
+        - vendor
 
     # 监听文件的格式，此类文件更改会执行 command 中的命令
     # .go   后缀为 .go 的文件更改，会执行 command 中的命令
@@ -83,9 +85,15 @@ command:
     # 可以有多条命令，会依次执行
     # 如有多条命令，每条命令都会等待上一条命令执行完毕后才会执行
     # 如遇交互式命令，允许外部获取输入
+    # 支持变量占位符,运行命令时会替换成实际值：
+    #    {{file}}    文件名(如 a.txt 、test/test2/a.go)
+    #    {{ext}}     文件后缀(如 .go)
+    #    {{changed}} 文件更新的本地时间戳(纳秒,如 1537326690523046400)
+    # 变量占位符使用示例：cp {{file}} /root/sync -rf  、 myCommand --{{ext}} {{changed}}
     exec:
         - go version
         - go env
+        - echo {{file}}
 ```
 
 ## QA
