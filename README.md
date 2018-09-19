@@ -6,13 +6,19 @@ fileboy，文件变更监听通知系统，使用 GO 编写。
 
 ## 编译环境    
 
-go version >=1.10    
+go version >=1.10   
+
+## 更新日志  
+
+[CHANGELOG](CHANGELOG.md)  
+
 
 ## 运行    
 
 ### 下载二进制文件   
 
-[正式版 v1.0](https://gitee.com/dengsgo/fileboy/releases)
+Github: [正式版 v1.1](https://github.com/dengsgo/fileboy/releases)  
+Gitee [正式版 v1.1](https://gitee.com/dengsgo/fileboy/releases)  
 
 直接下载已经编译好的对应平台二进制文件，加入系统 Path 中即可。 
 
