@@ -32,9 +32,10 @@ var (
 	runLock sync.Mutex
 )
 
-type wDirState struct {
-	Name      string
-	Recursive bool
+type changeFile struct {
+	Name    string
+	changed int64
+	Ext     string
 }
 
 func parseConfig() {
@@ -72,22 +73,28 @@ func eventDispatcher(event fsnotify.Event) {
 			}
 			log.Println("stop old process ")
 		}
-		go run()
+		go run(&changeFile{
+			Name:    relativePath(projectFolder, event.Name),
+			changed: time.Now().UnixNano(),
+			Ext:     ext,
+		})
 	case fsnotify.Remove:
 	case fsnotify.Rename:
 	}
 }
 
-func run() {
+func run(cf *changeFile) {
 	runLock.Lock()
 	defer runLock.Unlock()
 	for i := 0; i < len(cfg.Command.Exec); i++ {
-		carr := cmdParse2Array(cfg.Command.Exec[i])
+		carr := cmdParse2Array(cfg.Command.Exec[i], cf)
 		cmd = exec.Command(carr[0], carr[1:]...)
 		//cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: syscall.CREATE_UNICODE_ENVIRONMENT}
 		cmd.Stdin = os.Stdin
 		//cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
+		cmd.Dir = projectFolder
+		cmd.Env = os.Environ()
 		stdout, err := cmd.StdoutPipe()
 		if err != nil {
 			log.Println("error=>", err.Error())
@@ -198,7 +205,7 @@ func parseArgs() {
 	if l == 1 {
 		_, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
 		if err != nil {
-			log.Println("the filegirl.yaml file is not exist! ", err)
+			log.Println("the filegirl.yaml file does not exist! ", err)
 			fmt.Print(firstRunHelp)
 			fmt.Print(helpStr)
 			return
@@ -219,7 +226,7 @@ func parseArgs() {
 			return
 		case "exec":
 			parseConfig()
-			run()
+			run(new(changeFile))
 			return
 		default:
 			fmt.Print(helpStr)
@@ -232,7 +239,7 @@ func show() {
 	fmt.Print(logo)
 	rand.Seed(time.Now().UnixNano())
 	fmt.Println(englishSay[rand.Intn(len(englishSay))], "\r\n")
-	fmt.Println("Version: ", Version, "   Author: deng@yoytang.com")
+	fmt.Println("Version: ", Version, "   Author: dengsgo@yoytang.com")
 }
 
 func main() {

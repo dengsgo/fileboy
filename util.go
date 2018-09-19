@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
@@ -14,15 +15,25 @@ func inStringArray(value string, arr []string) bool {
 	return false
 }
 
-func cmdParse2Array(s string) []string {
+func cmdParse2Array(s string, cf *changeFile) []string {
 	a := strings.Split(s, " ")
 	r := make([]string, 0)
 	for i := 0; i < len(a); i++ {
 		if ss := strings.Trim(a[i], " "); ss != "" {
-			r = append(r, ss)
+			r = append(r, strParseRealStr(ss, cf))
 		}
 	}
 	return r
+}
+
+func strParseRealStr(s string, cf *changeFile) string {
+	return strings.Replace(
+		strings.Replace(
+			strings.Replace(s, "{{file}}", cf.Name, -1),
+			"{{ext}}", cf.Ext, -1,
+		),
+		"{{changed}}", strconv.FormatInt(cf.changed, 10), -1,
+	)
 }
 
 func dirParse2Array(s string) []string {
@@ -69,4 +80,8 @@ func arrayRemoveElement(a []string, r string) []string {
 		return []string{}
 	}
 	return append(a[:i], a[i+1:]...)
+}
+
+func relativePath(folder, p string) string {
+	return strings.TrimPrefix(p, folder)
 }
