@@ -1,12 +1,12 @@
 ## 项目说明  
 
-fileboy，文件变更监听通知系统，使用 GO 编写。  
+fileboy，文件变更监听通知系统，使用 Go 编写。  
 
 适用于 Hot Reload （典型的如开发go项目，无需每次手动执行 go build；又比如前端 node 打包） 或者 系统监控的场景。  
 
 ## 编译环境    
 
-go version >=1.10   
+go version >=1.10，推荐 1.11   
 
 ## 更新日志  
 
@@ -18,9 +18,9 @@ go version >=1.10
 ### 下载二进制文件   
 
 Github: [正式版 v1.1](https://github.com/dengsgo/fileboy/releases)  
-Gitee [正式版 v1.1](https://gitee.com/dengsgo/fileboy/releases)  
+Gitee:  [正式版 v1.1](https://gitee.com/dengsgo/fileboy/releases)  
 
-直接下载已经编译好的对应平台二进制文件，加入系统 Path 中即可。 
+下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
 
 ### 源码编译   
 
@@ -102,6 +102,18 @@ command:
         - echo {{file}}
 ```
 
+### TODO
+
+- [x] 命令支持变量占位符  
+- [x] 支持多命令  
+- [x] 支持监听指定文件夹  
+- [x] 支持不监听指定文件夹  
+- [x] 支持监听指定后缀文件  
+- [ ] 支持 http 通知  
+- [ ] 支持冗余任务丢弃
+
+
+
 ## QA
 
 #### 很多框架都自带了 hot reload 的功能，为什么还要单独写个 fileboy 呢？  
@@ -141,3 +153,14 @@ fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中
 #### 听说有彩蛋？
 
 (◡ᴗ◡✿)
+
+
+
+### 贡献者
+
+> 排名不分先后
+
+[@dengsgo](https://www.yoytang.com)  <dengsgo@yoytang.com>  
+
+[@itwesley](https://github.com/itwesley)  <wcshen1126@gmail.com>  
+
