@@ -60,6 +60,8 @@ Usage of fileboy:
         初始化 fileboy, 在当前目录生成 filegirl.yaml 配置文件
     exec 
         尝试运行定义的 command 命令
+    version 
+        查看当前版本号
 `
 
 var englishSay = []string{

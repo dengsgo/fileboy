@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -230,6 +231,10 @@ func parseArgs() {
 			parseConfig()
 			run(new(changeFile))
 			return
+		case "version":
+			fallthrough
+		case "v":
+			fmt.Println("[VERSION] Release: v1.2   filegirl: " + strconv.Itoa(Version))
 		default:
 			fmt.Print(helpStr)
 		}

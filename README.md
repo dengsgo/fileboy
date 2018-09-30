@@ -17,8 +17,8 @@ go version >=1.10，推荐 1.11
 
 ### 下载二进制文件   
 
-Github: [正式版 v1.1](https://github.com/dengsgo/fileboy/releases)  
-Gitee:  [正式版 v1.1](https://gitee.com/dengsgo/fileboy/releases)  
+Github: [正式版 v1.2](https://github.com/dengsgo/fileboy/releases)  
+Gitee:  [正式版 v1.2](https://gitee.com/dengsgo/fileboy/releases)  
 
 下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
 
