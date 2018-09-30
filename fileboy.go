@@ -34,7 +34,7 @@ var (
 
 type changeFile struct {
 	Name    string
-	changed int64
+	Changed int64
 	Ext     string
 }
 
@@ -75,7 +75,7 @@ func eventDispatcher(event fsnotify.Event) {
 		}
 		go run(&changeFile{
 			Name:    relativePath(projectFolder, event.Name),
-			changed: time.Now().UnixNano(),
+			Changed: time.Now().UnixNano(),
 			Ext:     ext,
 		})
 	case fsnotify.Remove:
@@ -143,12 +143,14 @@ func addWatcher() {
 			}
 			break
 		} else {
+			md := projectFolder + "/" + darr[0]
 			if len(darr) == 2 && darr[1] == "*" {
-				listFile(projectFolder+"/"+darr[0], func(d string) {
+				dirs = arrayUniqueAdd(dirs, md)
+				listFile(md, func(d string) {
 					dirs = arrayUniqueAdd(dirs, d)
 				})
 			} else {
-				dirs = arrayUniqueAdd(dirs, projectFolder+"/"+darr[0])
+				dirs = arrayUniqueAdd(dirs, md)
 			}
 		}
 

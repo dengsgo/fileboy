@@ -32,7 +32,7 @@ func strParseRealStr(s string, cf *changeFile) string {
 			strings.Replace(s, "{{file}}", cf.Name, -1),
 			"{{ext}}", cf.Ext, -1,
 		),
-		"{{changed}}", strconv.FormatInt(cf.changed, 10), -1,
+		"{{changed}}", strconv.FormatInt(cf.Changed, 10), -1,
 	)
 }
 
