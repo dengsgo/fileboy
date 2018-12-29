@@ -2,4 +2,7 @@
 fileboy
 fileboy.exe
 filegirl.yaml
-build-*
+fileboy-darwin-amd64.bin
+fileboy-linux-amd64.bin
+fileboy-windows-amd64.exe
+
