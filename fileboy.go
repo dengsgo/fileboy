@@ -1,19 +1,15 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"gopkg.in/fsnotify/fsnotify.v1"
 	"gopkg.in/yaml.v2"
-	"io"
 	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
-	"os/exec"
 	"path"
 	"strconv"
-	"sync"
 	"time"
 )
 
@@ -28,9 +24,7 @@ var (
 
 	watcher *fsnotify.Watcher
 
-	cmd *exec.Cmd
-
-	runLock sync.Mutex
+	tasker *Tasker
 )
 
 type changeFile struct {
@@ -67,14 +61,7 @@ func eventDispatcher(event fsnotify.Event) {
 	case fsnotify.Create:
 	case fsnotify.Write:
 		log.Println("event write : ", event.Name)
-		if cmd != nil {
-			err := cmd.Process.Kill()
-			if err != nil {
-				log.Println("err: ", err)
-			}
-			log.Println("stop old process ")
-		}
-		go run(&changeFile{
+		tasker.Put(&changeFile{
 			Name:    relativePath(projectFolder, event.Name),
 			Changed: time.Now().UnixNano(),
 			Ext:     ext,
@@ -82,46 +69,6 @@ func eventDispatcher(event fsnotify.Event) {
 	case fsnotify.Remove:
 	case fsnotify.Rename:
 	}
-}
-
-func run(cf *changeFile) {
-	runLock.Lock()
-	defer runLock.Unlock()
-	for i := 0; i < len(cfg.Command.Exec); i++ {
-		carr := cmdParse2Array(cfg.Command.Exec[i], cf)
-		cmd = exec.Command(carr[0], carr[1:]...)
-		//cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: syscall.CREATE_UNICODE_ENVIRONMENT}
-		cmd.Stdin = os.Stdin
-		//cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Dir = projectFolder
-		cmd.Env = os.Environ()
-		stdout, err := cmd.StdoutPipe()
-		if err != nil {
-			log.Println("error=>", err.Error())
-			return
-		}
-		cmd.Start()
-		reader := bufio.NewReader(stdout)
-		for {
-			line, err2 := reader.ReadString('\n')
-			if err2 != nil || io.EOF == err2 {
-				break
-			}
-			log.Print(line)
-		}
-		err = cmd.Wait()
-		if err != nil {
-			log.Println("cmd wait err ", err)
-			break
-		}
-		err = cmd.Process.Kill()
-		if err != nil {
-			log.Println("cmd cannot kill ", err)
-		}
-	}
-
-	log.Println("end ")
 }
 
 func addWatcher() {
@@ -183,6 +130,7 @@ func initWatcher() {
 	defer watcher.Close()
 
 	done := make(chan bool)
+	tasker = newTasker(2000)
 	go func() {
 		for {
 			select {
@@ -229,7 +177,7 @@ func parseArgs() {
 			return
 		case "exec":
 			parseConfig()
-			run(new(changeFile))
+			newTasker(0).run(new(changeFile))
 			return
 		case "version":
 			fallthrough
