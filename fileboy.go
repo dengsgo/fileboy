@@ -9,7 +9,6 @@ import (
 	"math/rand"
 	"os"
 	"path"
-	"strconv"
 	"time"
 )
 
@@ -179,10 +178,8 @@ func parseArgs() {
 			parseConfig()
 			newTaskMan(0).run(new(changeFile))
 			return
-		case "version":
-			fallthrough
-		case "v":
-			fmt.Println("[VERSION] Release: v1.2   filegirl: " + strconv.Itoa(Version))
+		case "version", "v", "-v", "--version":
+			fmt.Println(versionDesc)
 		default:
 			fmt.Print(helpStr)
 		}
@@ -193,8 +190,9 @@ func parseArgs() {
 func show() {
 	fmt.Print(logo)
 	rand.Seed(time.Now().UnixNano())
-	fmt.Println(englishSay[rand.Intn(len(englishSay))], "\r\n")
-	fmt.Println("Version: ", Version, "   Author: dengsgo@yoytang.com")
+	fmt.Println(englishSay[rand.Intn(len(englishSay))])
+	fmt.Println("")
+	fmt.Println(statement)
 }
 
 func main() {

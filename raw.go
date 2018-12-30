@@ -1,5 +1,7 @@
 package main
 
+import "strconv"
+
 var exampleFileGirl string = `# 主配置
 core:
     # 配置版本号
@@ -61,7 +63,7 @@ Usage of fileboy:
     exec 
         尝试运行定义的 command 命令
     version 
-        查看当前版本号
+        查看当前版本信息
 `
 
 var englishSay = []string{
@@ -83,5 +85,15 @@ var logo = `
  _____     _  | |      _____   ____)  ) |   | | |___| |
 |  ___)   | | | |     |  ___) |  __  (| |   | |\_____/ 
 | |      _| |_| |_____| |_____| |__)  ) |___| |  ___   
-|_|     (_____)_______)_______)______/ \_____/  (___)
+|_|     (_____)_______)_______)______/ \_____/  (___)   V1.2
+`
+var statement = `Dengsgo [dengsgo@gmail.com] Open Source with MIT License`
+
+var versionDesc = `
+ Version   fileboy: v1.2    filegirl: v` + strconv.Itoa(Version) + `
+Released   2019.1.1
+ Licence   MIT
+  Author   dengsgo [dengsgo@gmail.com]
+ Website   https://github.com/dengsgo/fileboy
+    Blog   https://www.yoytang.com
 `
