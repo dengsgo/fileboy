@@ -24,7 +24,7 @@ var (
 
 	watcher *fsnotify.Watcher
 
-	tasker *Tasker
+	taskMan *TaskMan
 )
 
 type changeFile struct {
@@ -61,7 +61,7 @@ func eventDispatcher(event fsnotify.Event) {
 	case fsnotify.Create:
 	case fsnotify.Write:
 		log.Println("event write : ", event.Name)
-		tasker.Put(&changeFile{
+		taskMan.Put(&changeFile{
 			Name:    relativePath(projectFolder, event.Name),
 			Changed: time.Now().UnixNano(),
 			Ext:     ext,
@@ -130,7 +130,7 @@ func initWatcher() {
 	defer watcher.Close()
 
 	done := make(chan bool)
-	tasker = newTasker(2000)
+	taskMan = newTaskMan(2000)
 	go func() {
 		for {
 			select {
@@ -177,7 +177,7 @@ func parseArgs() {
 			return
 		case "exec":
 			parseConfig()
-			newTasker(0).run(new(changeFile))
+			newTaskMan(0).run(new(changeFile))
 			return
 		case "version":
 			fallthrough

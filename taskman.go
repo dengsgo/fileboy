@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-type Tasker struct {
+type TaskMan struct {
 	lastTaskId int64
 	delay      int
 	cmd        *exec.Cmd
@@ -18,13 +18,13 @@ type Tasker struct {
 	runLock    sync.Mutex
 }
 
-func newTasker(delay int) *Tasker {
-	return &Tasker{
+func newTaskMan(delay int) *TaskMan {
+	return &TaskMan{
 		delay: delay,
 	}
 }
 
-func (t *Tasker) Put(cf *changeFile) {
+func (t *TaskMan) Put(cf *changeFile) {
 	if t.delay < 1 {
 		t.preRun(cf)
 		return
@@ -42,7 +42,7 @@ func (t *Tasker) Put(cf *changeFile) {
 	}()
 }
 
-func (t *Tasker) preRun(cf *changeFile) {
+func (t *TaskMan) preRun(cf *changeFile) {
 	if t.cmd != nil {
 		err := t.cmd.Process.Kill()
 		if err != nil {
@@ -53,7 +53,7 @@ func (t *Tasker) preRun(cf *changeFile) {
 	go t.run(cf)
 }
 
-func (t *Tasker) run(cf *changeFile) {
+func (t *TaskMan) run(cf *changeFile) {
 	t.runLock.Lock()
 	defer t.runLock.Unlock()
 	for i := 0; i < len(cfg.Command.Exec); i++ {
