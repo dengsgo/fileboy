@@ -26,7 +26,7 @@ func newTasker(delay int) *Tasker {
 
 func (t *Tasker) Put(cf *changeFile) {
 	if t.delay < 1 {
-		go t.run(cf)
+		t.preRun(cf)
 		return
 	}
 	t.putLock.Lock()
