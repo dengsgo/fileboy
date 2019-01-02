@@ -129,7 +129,7 @@ func initWatcher() {
 	defer watcher.Close()
 
 	done := make(chan bool)
-	taskMan = newTaskMan(2000)
+	taskMan = newTaskMan(cfg.Command.DelayMillSecond)
 	go func() {
 		for {
 			select {

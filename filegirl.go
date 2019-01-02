@@ -10,8 +10,7 @@ type FileGirl struct {
 		ExceptDirs  []string `yaml:"exceptDirs"`
 	}
 	Command struct {
-		//BeforeExec string   `yaml:"beforeExec"`
-		Exec []string `yaml:"exec"`
-		//AfterExec  string   `yaml:"afterExec"`
+		Exec            []string `yaml:"exec"`
+		DelayMillSecond int      `yaml:"delayMillSecond"`
 	}
 }
