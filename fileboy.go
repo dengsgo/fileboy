@@ -129,7 +129,7 @@ func initWatcher() {
 	defer watcher.Close()
 
 	done := make(chan bool)
-	taskMan = newTaskMan(cfg.Command.DelayMillSecond)
+	taskMan = newTaskMan(cfg.Command.DelayMillSecond, cfg.Notifier.CallUrl)
 	go func() {
 		for {
 			select {
@@ -176,7 +176,7 @@ func parseArgs() {
 			return
 		case "exec":
 			parseConfig()
-			newTaskMan(0).run(new(changeFile))
+			newTaskMan(0, cfg.Notifier.CallUrl).run(new(changeFile))
 			return
 		case "version", "v", "-v", "--version":
 			fmt.Println(versionDesc)

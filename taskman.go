@@ -14,13 +14,15 @@ type TaskMan struct {
 	lastTaskId int64
 	delay      int
 	cmd        *exec.Cmd
+	notifier   *NetNotifier
 	putLock    sync.Mutex
 	runLock    sync.Mutex
 }
 
-func newTaskMan(delay int) *TaskMan {
+func newTaskMan(delay int, callUrl string) *TaskMan {
 	return &TaskMan{
-		delay: delay,
+		delay:    delay,
+		notifier: newNetNotifier(callUrl),
 	}
 }
 
@@ -53,6 +55,7 @@ func (t *TaskMan) preRun(cf *changeFile) {
 }
 
 func (t *TaskMan) run(cf *changeFile) {
+	go t.notifier.Put(cf)
 	t.runLock.Lock()
 	defer t.runLock.Unlock()
 	for i := 0; i < len(cfg.Command.Exec); i++ {

@@ -53,6 +53,18 @@ command:
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
     # 如果不需要该特性，设置为 0
     delayMillSecond: 1000
+
+# 通知器
+notifier:
+    # 文件更改会向该 url 发送请求（POST 一段 json 文本数据）
+    # 例如: http://example.com/notifier/fileboy-listener
+    # 触发请求的时机和执行 command 命令是一致的
+    # POST 格式:
+    #    Content-Type: application/json;charset=UTF-8
+    #    User-Agent: FileBoy Net Notifier v1.2
+    #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    # 不启用通知，请留空
+    callUrl: ""
 `
 
 var firstRunHelp = `第一次运行 fileboy ?
