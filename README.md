@@ -117,7 +117,7 @@ command:
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
     # 如果不需要该特性，设置为 0
     delayMillSecond: 1000
-	
+
 # 通知器
 notifier:
     # 文件更改会向该 url 发送请求（POST 一段 json 文本数据）
