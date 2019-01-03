@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type postParams struct {
@@ -50,7 +51,9 @@ func (n *NetNotifier) dispatch(params *postParams) {
 		log.Println("error: json.Marshal n.params. ", err)
 		return
 	}
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Second * 15,
+	}
 	req, err := http.NewRequest("POST", n.CallUrl, bytes.NewBuffer(b))
 	if err != nil {
 		log.Println("error: http.NewRequest. ", err)
