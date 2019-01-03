@@ -45,7 +45,7 @@ func (t *TaskMan) Put(cf *changedFile) {
 }
 
 func (t *TaskMan) preRun(cf *changedFile) {
-	if t.cmd != nil {
+	if t.cmd != nil && t.cmd.Process != nil {
 		err := t.cmd.Process.Kill()
 		if err != nil {
 			log.Println("err: ", err)
@@ -74,7 +74,10 @@ func (t *TaskMan) run(cf *changedFile) {
 			log.Println("error=>", err.Error())
 			return
 		}
-		_ = t.cmd.Start()
+		err = t.cmd.Start()
+		if err != nil {
+			log.Println("run command", carr, "error. ", err)
+		}
 		reader := bufio.NewReader(stdout)
 		for {
 			line, err2 := reader.ReadString('\n')
@@ -88,9 +91,10 @@ func (t *TaskMan) run(cf *changedFile) {
 			log.Println("cmd wait err ", err)
 			break
 		}
-		err = t.cmd.Process.Kill()
-		if err != nil {
-			log.Println("cmd cannot kill ", err)
+		if t.cmd.Process != nil {
+			if err = t.cmd.Process.Kill(); err != nil {
+				log.Println("cmd cannot kill ", err)
+			}
 		}
 	}
 
