@@ -60,7 +60,7 @@ func eventDispatcher(event fsnotify.Event) {
 	case
 		fsnotify.Write,
 		fsnotify.Rename:
-		log.Println("EVENT", event.Op.String(), " : ", event.Name)
+		log.Println("EVENT", event.Op.String(), ":", event.Name)
 		taskMan.Put(&changedFile{
 			Name:    relativePath(projectFolder, event.Name),
 			Changed: time.Now().UnixNano(),
