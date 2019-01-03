@@ -158,7 +158,6 @@ func parseArgs() {
 		if err != nil {
 			log.Println("the filegirl.yaml file does not exist! ", err)
 			fmt.Print(firstRunHelp)
-			fmt.Print(helpStr)
 			return
 		}
 		initWatcher()

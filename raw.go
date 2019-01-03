@@ -57,19 +57,20 @@ command:
 # 通知器
 notifier:
     # 文件更改会向该 url 发送请求（POST 一段 json 文本数据）
-    # 例如: http://example.com/notifier/fileboy-listener
     # 触发请求的时机和执行 command 命令是一致的
+    # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
     #    User-Agent: FileBoy Net Notifier v1.2
     #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空
     callUrl: ""
 `
 
 var firstRunHelp = `第一次运行 fileboy ?
 你可能需要先执行 fileboy init 生成配置。
-更多信息查看帮助:
+更多信息使用 fileboy help 查看帮助
 `
 
 var helpStr = `fileboy [option]
