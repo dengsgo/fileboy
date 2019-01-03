@@ -32,7 +32,7 @@ func newNetNotifier(callUrl string) *NetNotifier {
 	}
 }
 
-func (n *NetNotifier) Put(cf *changeFile) {
+func (n *NetNotifier) Put(cf *changedFile) {
 	if !n.CanPost {
 		log.Println("notifier call url ignore. ", n.CallUrl)
 		return

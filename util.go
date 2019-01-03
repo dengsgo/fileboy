@@ -15,7 +15,7 @@ func inStringArray(value string, arr []string) bool {
 	return false
 }
 
-func cmdParse2Array(s string, cf *changeFile) []string {
+func cmdParse2Array(s string, cf *changedFile) []string {
 	a := strings.Split(s, " ")
 	r := make([]string, 0)
 	for i := 0; i < len(a); i++ {
@@ -26,7 +26,7 @@ func cmdParse2Array(s string, cf *changeFile) []string {
 	return r
 }
 
-func strParseRealStr(s string, cf *changeFile) string {
+func strParseRealStr(s string, cf *changedFile) string {
 	return strings.Replace(
 		strings.Replace(
 			strings.Replace(s, "{{file}}", cf.Name, -1),

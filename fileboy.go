@@ -26,7 +26,7 @@ var (
 	taskMan *TaskMan
 )
 
-type changeFile struct {
+type changedFile struct {
 	Name    string
 	Changed int64
 	Ext     string
@@ -60,7 +60,7 @@ func eventDispatcher(event fsnotify.Event) {
 	case fsnotify.Create:
 	case fsnotify.Write:
 		log.Println("event write : ", event.Name)
-		taskMan.Put(&changeFile{
+		taskMan.Put(&changedFile{
 			Name:    relativePath(projectFolder, event.Name),
 			Changed: time.Now().UnixNano(),
 			Ext:     ext,
@@ -176,7 +176,7 @@ func parseArgs() {
 			return
 		case "exec":
 			parseConfig()
-			newTaskMan(0, cfg.Notifier.CallUrl).run(new(changeFile))
+			newTaskMan(0, cfg.Notifier.CallUrl).run(new(changedFile))
 			return
 		case "version", "v", "-v", "--version":
 			fmt.Println(versionDesc)

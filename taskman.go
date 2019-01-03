@@ -26,7 +26,7 @@ func newTaskMan(delay int, callUrl string) *TaskMan {
 	}
 }
 
-func (t *TaskMan) Put(cf *changeFile) {
+func (t *TaskMan) Put(cf *changedFile) {
 	if t.delay < 1 {
 		t.preRun(cf)
 		return
@@ -43,7 +43,7 @@ func (t *TaskMan) Put(cf *changeFile) {
 	}()
 }
 
-func (t *TaskMan) preRun(cf *changeFile) {
+func (t *TaskMan) preRun(cf *changedFile) {
 	if t.cmd != nil {
 		err := t.cmd.Process.Kill()
 		if err != nil {
@@ -54,7 +54,7 @@ func (t *TaskMan) preRun(cf *changeFile) {
 	go t.run(cf)
 }
 
-func (t *TaskMan) run(cf *changeFile) {
+func (t *TaskMan) run(cf *changedFile) {
 	go t.notifier.Put(cf)
 	t.runLock.Lock()
 	defer t.runLock.Unlock()
