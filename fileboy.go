@@ -17,7 +17,7 @@ const (
 )
 
 var (
-	projectFolder string = "."
+	projectFolder = "."
 
 	cfg *FileGirl
 

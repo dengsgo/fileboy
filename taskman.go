@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -60,7 +61,7 @@ func (t *TaskMan) run(cf *changedFile) {
 	defer t.runLock.Unlock()
 	for i := 0; i < len(cfg.Command.Exec); i++ {
 		carr := cmdParse2Array(cfg.Command.Exec[i], cf)
-		log.Println(carr)
+		log.Println("EXEC", carr)
 		t.cmd = exec.Command(carr[0], carr[1:]...)
 		//cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: syscall.CREATE_UNICODE_ENVIRONMENT}
 		t.cmd.Stdin = os.Stdin
@@ -80,7 +81,7 @@ func (t *TaskMan) run(cf *changedFile) {
 			if err2 != nil || io.EOF == err2 {
 				break
 			}
-			log.Print(line)
+			fmt.Print(line)
 		}
 		err = t.cmd.Wait()
 		if err != nil {
