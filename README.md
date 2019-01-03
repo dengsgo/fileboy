@@ -4,6 +4,17 @@ fileboy，文件变更监听通知系统，使用 Go 编写。
 
 适用于 Hot Reload （典型的如开发go项目，无需每次手动执行 go build；又比如前端 node 打包） 或者 系统监控的场景。  
 
+## 特性  
+
+- 极简的用法和配置  
+- 支持多平台，Windows/Linux/MacOS  
+- 支持自定义文件监听范围，监听指定文件夹/不监听指定文件夹/指定后缀文件  
+- 支持设置多条命令  
+- 命令支持变量占位符  
+- 支持冗余任务丢弃，自定义冗余任务范围  
+- 支持 http 通知  
+- 更多...  
+
 ## 编译环境    
 
 go version >=1.10，推荐 1.11   
@@ -17,8 +28,8 @@ go version >=1.10，推荐 1.11
 
 ### 下载二进制文件   
 
-Github: [正式版 v1.2](https://github.com/dengsgo/fileboy/releases)  
-Gitee:  [正式版 v1.2](https://gitee.com/dengsgo/fileboy/releases)  
+Github: [正式版 v1.5](https://github.com/dengsgo/fileboy/releases)  
+Gitee:  [正式版 v1.5](https://gitee.com/dengsgo/fileboy/releases)  
 
 下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
 
@@ -106,6 +117,19 @@ command:
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
     # 如果不需要该特性，设置为 0
     delayMillSecond: 1000
+	
+# 通知器
+notifier:
+    # 文件更改会向该 url 发送请求（POST 一段 json 文本数据）
+    # 触发请求的时机和执行 command 命令是一致的
+    # 请求超时 15 秒
+    # POST 格式:
+    #    Content-Type: application/json;charset=UTF-8
+    #    User-Agent: FileBoy Net Notifier v1.5
+    #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    # 例: http://example.com/notifier/fileboy-listener
+    # 不启用通知，请留空
+    callUrl: ""
 ```
 
 ### TODO
@@ -115,8 +139,9 @@ command:
 - [x] 支持监听指定文件夹  
 - [x] 支持不监听指定文件夹  
 - [x] 支持监听指定后缀文件  
-- [ ] 支持 http 通知  
-- [x] 支持冗余任务丢弃
+- [x] 支持 http 通知  
+- [x] 支持冗余任务丢弃  
+- [ ] 支持 http 合并任务的通知  
 
 
 
@@ -132,9 +157,13 @@ command:
 
 对于一些需要监控文件日志或者配置变动的场景， fileboy 同样适合。你可以事先编写好相应的通知报警脚本，然后定义`filegirl.yaml`中的`command`命令，交由 fileboy 自动运行监控报警。  
 
+#### 通知器在什么时候会发送 http 请求 ?
+
+通知器发送 http 通知的前提是在配置文件中设置了 `callUrl` 参数（不为空即为已设置）。触发请求的时机和执行 command 命令是一致的，`command -> delayMillSecond` 参数对于触发器同样有效。请求超时默认15秒.  
+
 #### idea 下更改文件，为什么会执行两次或者多次 command ?
 
-由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。这个后续会做优化.  
+由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。1.5版本增加了 `delayMillSecond` 参数，可以解决这个问题。  
 
 #### filegirl.yaml 里面的 command 不支持复杂的命令吗？  
 
@@ -154,11 +183,7 @@ fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中
 
 #### 为什么起名为 fileboy，又把配置名叫做 filegirl ？
 
-因为爱情~~
-
-#### 听说有彩蛋？
-
-(◡ᴗ◡✿)
+因为爱情~~ (◡ᴗ◡✿)  
 
 
 

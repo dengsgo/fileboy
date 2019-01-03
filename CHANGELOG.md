@@ -1,3 +1,13 @@
+### Release v1.5
+
+2019.01.03  
+
+- 增加 http 通知  
+- 增加 callUrl 参数  
+- 优化 command 稳定性  
+
+
+
 2019.01.02  
 
 - 增加 command -> delayMillSecond 参数  
