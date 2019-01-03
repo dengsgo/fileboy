@@ -57,16 +57,17 @@ func eventDispatcher(event fsnotify.Event) {
 		return
 	}
 	switch event.Op {
-	case fsnotify.Create:
-	case fsnotify.Write:
-		log.Println("event write : ", event.Name)
+	case
+		fsnotify.Write,
+		fsnotify.Rename:
+		log.Println("EVENT", event.Op.String(), " : ", event.Name)
 		taskMan.Put(&changedFile{
 			Name:    relativePath(projectFolder, event.Name),
 			Changed: time.Now().UnixNano(),
 			Ext:     ext,
 		})
 	case fsnotify.Remove:
-	case fsnotify.Rename:
+	case fsnotify.Create:
 	}
 }
 
