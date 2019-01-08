@@ -52,7 +52,7 @@ command:
     # B及以后的事件均依次类推，直到事件Z在t内没有新事件产生，Z 会执行
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
     # 如果不需要该特性，设置为 0
-    delayMillSecond: 1000
+    delayMillSecond: 2000
 
 # 通知器
 notifier:
