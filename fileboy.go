@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"os"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -78,6 +79,9 @@ func addWatcher() {
 		darr := dirParse2Array(cfg.Monitor.IncludeDirs[i])
 		if len(darr) < 1 || len(darr) > 2 {
 			log.Fatalln("filegirl section monitor dirs is error. ", cfg.Monitor.IncludeDirs[i])
+		}
+		if strings.HasPrefix(darr[0], "/") {
+			log.Fatalln("dirs must be relative paths ! err path:", cfg.Monitor.IncludeDirs[i])
 		}
 		if darr[0] == "." {
 			if len(darr) == 2 && darr[1] == "*" {
