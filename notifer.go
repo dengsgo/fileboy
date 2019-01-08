@@ -62,7 +62,15 @@ func (n *NetNotifier) dispatch(params *postParams) {
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	req.Header.Set("User-Agent", "FileBoy Net Notifier v1.5")
 	resp, err := client.Do(req)
-	defer resp.Body.Close()
+	if err != nil {
+		log.Println("notifier call failed. err:", err)
+		return
+	}
+	defer func() {
+		if resp != nil && resp.Body != nil {
+			_ = resp.Body.Close()
+		}
+	}()
 	if resp.StatusCode >= 300 {
 		// todo retry???
 	}
