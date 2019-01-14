@@ -116,7 +116,7 @@ command:
     # B及以后的事件均依次类推，直到事件Z在t内没有新事件产生，Z 会执行
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
     # 如果不需要该特性，设置为 0
-    delayMillSecond: 1000
+    delayMillSecond: 2000
 
 # 通知器
 notifier:
@@ -128,7 +128,7 @@ notifier:
     #    User-Agent: FileBoy Net Notifier v1.5
     #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
     # 例: http://example.com/notifier/fileboy-listener
-    # 不启用通知，请留空
+    # 不启用通知，请留空 ""
     callUrl: ""
 ```
 
@@ -191,7 +191,9 @@ fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中
 
 > 排名不分先后
 
-[@dengsgo](https://www.yoytang.com)  <dengsgo@yoytang.com>  
+[@dengsgo](https://www.yoytang.com)  <dengsgo@gmail.com>  
 
 [@itwesley](https://github.com/itwesley)  <wcshen1126@gmail.com>  
+
+[@jason-gao](https://github.com/jason-gao)  <3048789891@qq.com>  
 
