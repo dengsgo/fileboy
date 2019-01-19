@@ -34,7 +34,7 @@ func newNetNotifier(callUrl string) *NetNotifier {
 
 func (n *NetNotifier) Put(cf *changedFile) {
 	if !n.CanPost {
-		log.Println("notifier call url ignore. ", n.CallUrl)
+		log.Println(PreWarn, "notifier call url ignore. ", n.CallUrl)
 		return
 	}
 	n.dispatch(&postParams{
@@ -48,7 +48,7 @@ func (n *NetNotifier) Put(cf *changedFile) {
 func (n *NetNotifier) dispatch(params *postParams) {
 	b, err := json.Marshal(params)
 	if err != nil {
-		log.Println("error: json.Marshal n.params. ", err)
+		log.Println(PreError, "json.Marshal n.params. ", err)
 		return
 	}
 	client := &http.Client{
@@ -56,14 +56,14 @@ func (n *NetNotifier) dispatch(params *postParams) {
 	}
 	req, err := http.NewRequest("POST", n.CallUrl, bytes.NewBuffer(b))
 	if err != nil {
-		log.Println("error: http.NewRequest. ", err)
+		log.Println(PreError, "http.NewRequest. ", err)
 		return
 	}
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	req.Header.Set("User-Agent", "FileBoy Net Notifier v1.5")
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Println("notifier call failed. err:", err)
+		log.Println(PreError, "notifier call failed. err:", err)
 		return
 	}
 	defer func() {

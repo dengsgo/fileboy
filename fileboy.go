@@ -15,6 +15,9 @@ import (
 
 const (
 	Version = 1
+
+	PreError = "ERROR:"
+	PreWarn  = "Warn:"
 )
 
 var (
@@ -37,14 +40,14 @@ func parseConfig() {
 	cfg = new(FileGirl)
 	fc, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
 	if err != nil {
-		log.Panicln("read filegirl.yaml file err: ", err)
+		log.Panicln(PreError, "read filegirl.yaml file err: ", err)
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		log.Panicln("parsed filegirl.yaml failed: ", err)
+		log.Panicln(PreError, "parsed filegirl.yaml failed: ", err)
 	}
 	if cfg.Core.Version > Version {
-		log.Panicln("current fileboy support max version : ", Version)
+		log.Panicln(PreError, "current fileboy support max version : ", Version)
 	}
 	log.Println(cfg)
 }
@@ -78,10 +81,10 @@ func addWatcher() {
 	for i := 0; i < len(cfg.Monitor.IncludeDirs); i++ {
 		darr := dirParse2Array(cfg.Monitor.IncludeDirs[i])
 		if len(darr) < 1 || len(darr) > 2 {
-			log.Fatalln("filegirl section monitor dirs is error. ", cfg.Monitor.IncludeDirs[i])
+			log.Fatalln(PreError, "filegirl section monitor dirs is error. ", cfg.Monitor.IncludeDirs[i])
 		}
 		if strings.HasPrefix(darr[0], "/") {
-			log.Fatalln("dirs must be relative paths ! err path:", cfg.Monitor.IncludeDirs[i])
+			log.Fatalln(PreError, "dirs must be relative paths ! err path:", cfg.Monitor.IncludeDirs[i])
 		}
 		if darr[0] == "." {
 			if len(darr) == 2 && darr[1] == "*" {
@@ -147,7 +150,7 @@ func initWatcher() {
 				if !ok {
 					return
 				}
-				log.Println("error:", err)
+				log.Println(PreError, err)
 			}
 		}
 	}()
@@ -160,7 +163,7 @@ func parseArgs() {
 	if l == 1 {
 		_, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
 		if err != nil {
-			log.Println("the filegirl.yaml file does not exist! ", err)
+			log.Println(PreError, "the filegirl.yaml file does not exist! ", err)
 			fmt.Print(firstRunHelp)
 			return
 		}
@@ -173,7 +176,7 @@ func parseArgs() {
 		case "init":
 			err := ioutil.WriteFile(projectFolder+"/filegirl.yaml", []byte(exampleFileGirl), 0644)
 			if err != nil {
-				log.Println("error create filegirl.yaml config! ", err)
+				log.Println(PreError, "error create filegirl.yaml config! ", err)
 				return
 			}
 			log.Println("create filegirl.yaml ok")
