@@ -28,8 +28,8 @@ go version >=1.10，推荐 1.11
 
 ### 下载二进制文件   
 
-Github: [正式版 v1.5](https://github.com/dengsgo/fileboy/releases)  
-Gitee:  [正式版 v1.5](https://gitee.com/dengsgo/fileboy/releases)  
+Github: [正式版 v1.6](https://github.com/dengsgo/fileboy/releases)  
+Gitee:  [正式版 v1.6](https://gitee.com/dengsgo/fileboy/releases)  
 
 下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
 
@@ -111,7 +111,7 @@ command:
         - go version
         - go env
 
-    # 文件变更后命令会在xx毫秒后才会执行，单位为毫秒
+    # 文件变更后命令在xx毫秒后才会执行，单位为毫秒
     # 一个变更事件(A)如果在定义的延迟时间(t)内，又有新的文件变更事件(B)，那么A会取消执行。
     # B及以后的事件均依次类推，直到事件Z在t内没有新事件产生，Z 会执行
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
@@ -125,7 +125,7 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.5
+    #    User-Agent: FileBoy Net Notifier v1.6
     #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""
@@ -163,7 +163,7 @@ notifier:
 
 #### idea 下更改文件，为什么会执行两次或者多次 command ?
 
-由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。1.5版本增加了 `delayMillSecond` 参数，可以解决这个问题。  
+由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。1.5之后的版本增加了 `delayMillSecond` 参数，可以解决这个问题。  
 
 #### filegirl.yaml 里面的 command 不支持复杂的命令吗？  
 

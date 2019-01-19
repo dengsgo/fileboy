@@ -47,7 +47,7 @@ command:
         - go version
         - go env
 
-    # 文件变更后命令会在xx毫秒后才会执行，单位为毫秒
+    # 文件变更后命令在xx毫秒后才会执行，单位为毫秒
     # 一个变更事件(A)如果在定义的延迟时间(t)内，又有新的文件变更事件(B)，那么A会取消执行。
     # B及以后的事件均依次类推，直到事件Z在t内没有新事件产生，Z 会执行
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
@@ -61,10 +61,10 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.5
+    #    User-Agent: FileBoy Net Notifier v1.6
     #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
     # 例: http://example.com/notifier/fileboy-listener
-    # 不启用通知，请留空
+    # 不启用通知，请留空 ""
     callUrl: ""
 `
 
@@ -104,13 +104,13 @@ var logo = `
  _____     _  | |      _____   ____)  ) |   | | |___| |
 |  ___)   | | | |     |  ___) |  __  (| |   | |\_____/ 
 | |      _| |_| |_____| |_____| |__)  ) |___| |  ___   
-|_|     (_____)_______)_______)______/ \_____/  (___)   V1.5
+|_|     (_____)_______)_______)______/ \_____/  (___)   V1.6
 `
 var statement = `Dengsgo [dengsgo@gmail.com] Open Source with MIT License`
 
 var versionDesc = `
- Version   fileboy: v1.5    filegirl: v` + strconv.Itoa(Version) + `
-Released   2019.1.3
+ Version   fileboy: v1.6    filegirl: v` + strconv.Itoa(Version) + `
+Released   2019.1.19
  Licence   MIT
   Author   dengsgo [dengsgo@gmail.com]
  Website   https://github.com/dengsgo/fileboy

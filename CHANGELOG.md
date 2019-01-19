@@ -1,3 +1,15 @@
+### Release v1.6
+
+2019.01.19  
+
+- 修复 http 通知失败导致进程崩溃  
+- 增加 includeDirs 参数规则验证  
+- 修改 delayMillSecond 默认值,2000  
+- 增加 贡献者 @jason-gao  
+- 优化 log  
+
+
+
 ### Release v1.5
 
 2019.01.03  
