@@ -36,7 +36,7 @@ func (t *TaskMan) Put(cf *changedFile) {
 	defer t.putLock.Unlock()
 	t.lastTaskId = cf.Changed
 	go func() {
-		<-time.Tick(time.Millisecond * time.Duration(t.delay))
+		<-time.After(time.Millisecond * time.Duration(t.delay))
 		if t.lastTaskId > cf.Changed {
 			return
 		}
