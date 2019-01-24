@@ -45,7 +45,7 @@ func (t *TaskMan) Put(cf *changedFile) {
 }
 
 func (t *TaskMan) preRun(cf *changedFile) {
-	if t.cmd != nil && t.cmd.Process != nil && !t.cmd.ProcessState.Exited() {
+	if t.cmd != nil && t.cmd.Process != nil && t.cmd.ProcessState != nil && !t.cmd.ProcessState.Exited() {
 		log.Println("stop old process ")
 		if err := t.cmd.Process.Kill(); err != nil {
 			log.Println(PreWarn, "stopped err, reason:", err)
@@ -90,7 +90,7 @@ func (t *TaskMan) run(cf *changedFile) {
 			log.Println(PreWarn, "cmd wait err ", err)
 			break
 		}
-		if t.cmd.Process != nil && !t.cmd.ProcessState.Exited() {
+		if t.cmd.Process != nil && t.cmd.ProcessState != nil && !t.cmd.ProcessState.Exited() {
 			if err = t.cmd.Process.Kill(); err != nil {
 				log.Println(PreWarn, "cmd cannot kill, reason:", err)
 			}
