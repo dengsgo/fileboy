@@ -15,6 +15,11 @@ func inStringArray(value string, arr []string) bool {
 	return false
 }
 
+func keyInMonitorTypesMap(k string, cfg *FileGirl) bool {
+	_, ok := cfg.Monitor.TypesMap[k]
+	return ok
+}
+
 func cmdParse2Array(s string, cf *changedFile) []string {
 	a := strings.Split(s, " ")
 	r := make([]string, 0)

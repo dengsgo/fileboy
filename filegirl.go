@@ -5,9 +5,10 @@ type FileGirl struct {
 		Version int `yaml:"version"`
 	}
 	Monitor struct {
-		Types       []string `yaml:"types"`
-		IncludeDirs []string `yaml:"includeDirs"`
-		ExceptDirs  []string `yaml:"exceptDirs"`
+		Types       []string        `yaml:"types"`
+		TypesMap    map[string]bool `yaml:"-"`
+		IncludeDirs []string        `yaml:"includeDirs"`
+		ExceptDirs  []string        `yaml:"exceptDirs"`
 	}
 	Command struct {
 		Exec            []string `yaml:"exec"`

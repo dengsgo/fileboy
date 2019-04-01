@@ -49,15 +49,19 @@ func parseConfig() {
 	if cfg.Core.Version > Version {
 		log.Panicln(PreError, "current fileboy support max version : ", Version)
 	}
+	// types convert map
+	cfg.Monitor.TypesMap = map[string]bool{}
+	for _, v := range cfg.Monitor.Types {
+		cfg.Monitor.TypesMap[v] = true
+	}
 	log.Println(cfg)
 }
 
 func eventDispatcher(event fsnotify.Event) {
 	ext := path.Ext(event.Name)
 	if len(cfg.Monitor.Types) > 0 &&
-		cfg.Monitor.Types[0] != ".*" &&
-		!inStringArray(ext, cfg.Monitor.Types) {
-		//log.Println(ext, cfg.Monitor.Types, inStringArray(ext, cfg.Monitor.Types))
+		!keyInMonitorTypesMap(".*", cfg) &&
+		!keyInMonitorTypesMap(ext, cfg) {
 		return
 	}
 	switch event.Op {
