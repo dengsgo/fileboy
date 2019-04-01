@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -134,6 +135,7 @@ func addWatcher() {
 			log.Fatalln(err)
 		}
 	}
+	log.Println("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
 	log.Println("fileboy is ready.")
 }
 
