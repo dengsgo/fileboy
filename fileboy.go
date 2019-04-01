@@ -49,8 +49,11 @@ func parseConfig() {
 	if cfg.Core.Version > Version {
 		log.Panicln(PreError, "current fileboy support max version : ", Version)
 	}
-	// types convert map
+	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
+	cfg.Monitor.IncludeDirsMap = map[string]bool{}
+	cfg.Monitor.ExceptDirsMap = map[string]bool{}
+	// convert to map
 	for _, v := range cfg.Monitor.Types {
 		cfg.Monitor.TypesMap[v] = true
 	}
@@ -81,47 +84,50 @@ func eventDispatcher(event fsnotify.Event) {
 
 func addWatcher() {
 	log.Println("collecting directory information...")
-	dirs := make([]string, 0)
-	for i := 0; i < len(cfg.Monitor.IncludeDirs); i++ {
-		darr := dirParse2Array(cfg.Monitor.IncludeDirs[i])
+	dirsMap := map[string]bool{}
+	for _, dir := range cfg.Monitor.IncludeDirs {
+		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
-			log.Fatalln(PreError, "filegirl section monitor dirs is error. ", cfg.Monitor.IncludeDirs[i])
+			log.Fatalln(PreError, "filegirl section monitor dirs is error. ", dir)
 		}
 		if strings.HasPrefix(darr[0], "/") {
-			log.Fatalln(PreError, "dirs must be relative paths ! err path:", cfg.Monitor.IncludeDirs[i])
+			log.Fatalln(PreError, "dirs must be relative paths ! err path:", dir)
 		}
 		if darr[0] == "." {
 			if len(darr) == 2 && darr[1] == "*" {
-				dirs = make([]string, 0)
-				dirs = append(dirs, ".")
+				// The highest priority
+				dirsMap = map[string]bool{
+					projectFolder: true,
+				}
 				listFile(projectFolder, func(d string) {
-					dirs = arrayUniqueAdd(dirs, d)
+					dirsMap[d] = true
 				})
+				break
 			} else {
-				dirs = arrayUniqueAdd(dirs, projectFolder)
+				dirsMap[projectFolder] = true
 			}
-			break
 		} else {
 			md := projectFolder + "/" + darr[0]
+			dirsMap[md] = true
 			if len(darr) == 2 && darr[1] == "*" {
-				dirs = arrayUniqueAdd(dirs, md)
 				listFile(md, func(d string) {
-					dirs = arrayUniqueAdd(dirs, d)
+					dirsMap[d] = true
 				})
-			} else {
-				dirs = arrayUniqueAdd(dirs, md)
 			}
 		}
 
 	}
-	for i := 0; i < len(cfg.Monitor.ExceptDirs); i++ {
-		p := projectFolder + "/" + cfg.Monitor.ExceptDirs[i]
-		dirs = arrayRemoveElement(dirs, p)
+	for _, dir := range cfg.Monitor.ExceptDirs {
+		if dir == "." {
+			log.Fatalln(PreError, "exceptDirs must is not project root path ! err path:", dir)
+		}
+		p := projectFolder + "/" + dir
+		delete(dirsMap, p)
 		listFile(p, func(d string) {
-			dirs = arrayRemoveElement(dirs, d)
+			delete(dirsMap, d)
 		})
 	}
-	for _, dir := range dirs {
+	for dir := range dirsMap {
 		log.Println("watcher add -> ", dir)
 		err := watcher.Add(dir)
 		if err != nil {
