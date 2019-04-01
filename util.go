@@ -6,15 +6,6 @@ import (
 	"strings"
 )
 
-func inStringArray(value string, arr []string) bool {
-	for _, v := range arr {
-		if value == v {
-			return true
-		}
-	}
-	return false
-}
-
 func keyInMonitorTypesMap(k string, cfg *FileGirl) bool {
 	_, ok := cfg.Monitor.TypesMap[k]
 	return ok
@@ -61,30 +52,6 @@ func listFile(folder string, fun func(string)) {
 			listFile(d, fun)
 		}
 	}
-}
-
-func arrayUniqueAdd(a []string, add string) []string {
-	if inStringArray(add, a) {
-		return a
-	}
-	return append(a, add)
-}
-
-func arrayRemoveElement(a []string, r string) []string {
-	i := -1
-	for k, v := range a {
-		if v == r {
-			i = k
-			break
-		}
-	}
-	if i == -1 {
-		return a
-	}
-	if len(a) == 1 && i == 0 {
-		return []string{}
-	}
-	return append(a[:i], a[i+1:]...)
 }
 
 func relativePath(folder, p string) string {
