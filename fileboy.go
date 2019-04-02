@@ -137,6 +137,7 @@ func addWatcher() {
 	}
 	log.Println("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
 	log.Println("fileboy is ready.")
+	cfg.Monitor.DirsMap = dirsMap
 }
 
 func initWatcher() {
