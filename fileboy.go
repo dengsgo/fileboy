@@ -41,7 +41,9 @@ func parseConfig() {
 	cfg = new(FileGirl)
 	fc, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
 	if err != nil {
-		log.Panicln(PreError, "read filegirl.yaml file err: ", err)
+		log.Println(PreError, "the filegirl.yaml file in", projectFolder, "is not exist! ", err)
+		fmt.Print(firstRunHelp)
+		log.Fatalln("fileboy unable to run.")
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
@@ -50,6 +52,7 @@ func parseConfig() {
 	if cfg.Core.Version > Version {
 		log.Panicln(PreError, "current fileboy support max version : ", Version)
 	}
+	cfg.Monitor.RootWatch = false
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
 	cfg.Monitor.IncludeDirsMap = map[string]bool{}
@@ -68,13 +71,17 @@ func eventDispatcher(event fsnotify.Event) {
 		!keyInMonitorTypesMap(ext, cfg) {
 		return
 	}
+	fileName := relativePath(projectFolder, event.Name)
+	if !cfg.Monitor.RootWatch && fileName != "filegirl.yaml" {
+		return
+	}
 	switch event.Op {
 	case
 		fsnotify.Write,
 		fsnotify.Rename:
 		log.Println("EVENT", event.Op.String(), ":", event.Name)
 		taskMan.Put(&changedFile{
-			Name:    relativePath(projectFolder, event.Name),
+			Name:    fileName,
 			Changed: time.Now().UnixNano(),
 			Ext:     ext,
 		})
@@ -85,7 +92,9 @@ func eventDispatcher(event fsnotify.Event) {
 
 func addWatcher() {
 	log.Println("collecting directory information...")
-	dirsMap := map[string]bool{}
+	dirsMap := map[string]bool{
+		projectFolder: true,
+	}
 	for _, dir := range cfg.Monitor.IncludeDirs {
 		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
@@ -95,6 +104,7 @@ func addWatcher() {
 			log.Fatalln(PreError, "dirs must be relative paths ! err path:", dir)
 		}
 		if darr[0] == "." {
+			cfg.Monitor.RootWatch = true
 			if len(darr) == 2 && darr[1] == "*" {
 				// The highest priority
 				dirsMap = map[string]bool{
@@ -141,15 +151,14 @@ func addWatcher() {
 }
 
 func initWatcher() {
-	parseConfig()
 	var err error
+	if watcher != nil {
+		_ = watcher.Close()
+	}
 	watcher, err = fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer watcher.Close()
-
-	done := make(chan bool)
 	taskMan = newTaskMan(cfg.Command.DelayMillSecond, cfg.Notifier.CallUrl)
 	go func() {
 		for {
@@ -168,22 +177,18 @@ func initWatcher() {
 		}
 	}()
 	addWatcher()
-	<-done
 }
 
 func parseArgs() {
-	l := len(os.Args)
-	if l == 1 {
-		_, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
-		if err != nil {
-			log.Println(PreError, "the filegirl.yaml file does not exist! ", err)
-			fmt.Print(firstRunHelp)
-			return
-		}
+	switch len(os.Args) {
+	case 1:
+		parseConfig()
+		done := make(chan bool)
 		initWatcher()
+		defer watcher.Close()
+		<-done
 		return
-	}
-	if l == 2 {
+	case 2:
 		c := os.Args[1]
 		switch c {
 		case "init":
@@ -204,6 +209,8 @@ func parseArgs() {
 			fmt.Print(helpStr)
 		}
 		return
+	default:
+		log.Fatalln("Unknown parameters, use `fileboy help` show help info.")
 	}
 }
 

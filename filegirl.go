@@ -8,6 +8,8 @@ type FileGirl struct {
 		Types       []string `yaml:"types"`
 		IncludeDirs []string `yaml:"includeDirs"`
 		ExceptDirs  []string `yaml:"exceptDirs"`
+		// project root watcher flag
+		RootWatch bool `yaml:"-"`
 		// convert to
 		TypesMap       map[string]bool `yaml:"-"`
 		IncludeDirsMap map[string]bool `yaml:"-"`
