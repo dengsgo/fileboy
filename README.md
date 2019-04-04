@@ -153,7 +153,7 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.8
+    #    User-Agent: FileBoy Net Notifier v1.9
     #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""
@@ -216,7 +216,7 @@ notifier:
     # timeout 15 second
     # POST :
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.8
+    #    User-Agent: FileBoy Net Notifier v1.9
     #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
     # e.g: http://example.com/notifier/fileboy-listener
     # no notice is enabled. Please leave it blank. ""
