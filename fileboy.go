@@ -52,7 +52,6 @@ func parseConfig() {
 	if cfg.Core.Version > Version {
 		log.Panicln(PreError, "current fileboy support max version : ", Version)
 	}
-	cfg.Monitor.RootWatch = false
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
 	cfg.Monitor.IncludeDirsMap = map[string]bool{}
@@ -71,17 +70,13 @@ func eventDispatcher(event fsnotify.Event) {
 		!keyInMonitorTypesMap(ext, cfg) {
 		return
 	}
-	fileName := relativePath(projectFolder, event.Name)
-	if !cfg.Monitor.RootWatch && fileName != "filegirl.yaml" {
-		return
-	}
 	switch event.Op {
 	case
 		fsnotify.Write,
 		fsnotify.Rename:
 		log.Println("EVENT", event.Op.String(), ":", event.Name)
 		taskMan.Put(&changedFile{
-			Name:    fileName,
+			Name:    relativePath(projectFolder, event.Name),
 			Changed: time.Now().UnixNano(),
 			Ext:     ext,
 		})
@@ -104,7 +99,6 @@ func addWatcher() {
 			log.Fatalln(PreError, "dirs must be relative paths ! err path:", dir)
 		}
 		if darr[0] == "." {
-			cfg.Monitor.RootWatch = true
 			if len(darr) == 2 && darr[1] == "*" {
 				// The highest priority
 				dirsMap = map[string]bool{

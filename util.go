@@ -55,5 +55,9 @@ func listFile(folder string, fun func(string)) {
 }
 
 func relativePath(folder, p string) string {
-	return strings.TrimPrefix(p, folder)
+	s := strings.ReplaceAll(strings.TrimPrefix(p, folder), "\\", "/")
+	if strings.HasPrefix(s, "/") && len(s) > 1 {
+		s = s[1:]
+	}
+	return s
 }
