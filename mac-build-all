@@ -1,0 +1,12 @@
+export CGO_ENABLED=0
+export GOARCH=amd64
+export GOOS=darwin
+go build -ldflags "-s -w" -o fileboy-darwin-amd64.bin
+echo darwin ok
+export GOOS=linux
+go build -ldflags "-s -w" -o fileboy-linux-amd64.bin
+echo linux ok
+export GOOS=windows
+go build -ldflags "-s -w" -o fileboy-windows-amd64.exe
+echo windows ok
+
