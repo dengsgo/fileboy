@@ -1,8 +1,11 @@
 ## 项目说明  
 
 fileboy，文件变更监听通知系统，使用 Go 编写。  
-
 适用于 Hot Reload （典型的如开发go项目，无需每次手动执行 go build；又比如前端 node 打包） 或者 系统监控的场景。  
+___  
+Fileboy, File Change Monitoring Notification System, written with Go.  
+For Hot Reload scenarios (typically for developing go projects without having to perform go build manually every time; for example, front-end node packaging) or system monitoring.  
+
 
 ## 特性  
 
@@ -14,10 +17,20 @@ fileboy，文件变更监听通知系统，使用 Go 编写。
 - 支持冗余任务丢弃，自定义冗余任务范围  
 - 支持 http 通知  
 - 更多...  
+___  
+- Minimalist usage and configuration  
+- Support multiple platforms, Windows/Linux/MacOS  
+- Supports custom file listening scope, listening for specified folders/not listening for specified folders/specified suffix files  
+- Support for setting up multiple commands  
+- Command support variable placeholders  
+- Supporting redundant task discarding and customizing redundant task scope  
+- Supporting HTTP notifications  
+- more...  
+
 
 ## 编译环境    
 
-go version >=1.10，推荐 1.12   
+go version 1.12   
 
 ## 更新日志  
 
@@ -28,15 +41,16 @@ go version >=1.10，推荐 1.12
 
 ### 下载二进制文件   
 
-Github: [正式版 v1.8](https://github.com/dengsgo/fileboy/releases)  
-Gitee:  [正式版 v1.8](https://gitee.com/dengsgo/fileboy/releases)  
+Github: [download v1.9](https://github.com/dengsgo/fileboy/releases)  
+Gitee:  [dowmload v1.9](https://gitee.com/dengsgo/fileboy/releases)  
 
 下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
+___  
+Download the compiled binary file of the corresponding platform, rename it `fileboy', and add it to the system Path.  
 
 ### 源码编译   
 
-clone 该项目，进入主目录，运行命令:    
-
+clone 该项目，进入主目录，运行命令:  
 ```shell
 ## 安装依赖
 go get -u gopkg.in/fsnotify/fsnotify.v1
@@ -46,22 +60,36 @@ go build
 ## 运行
 ./fileboy
 ```
-
+___  
+Clone project, enter the project directory, run the command:  
+```shell
+## installation dependency
+go get-u gopkg.in/fsnotify/fsnotify.v1
+go get-u gopkg.in/yaml.v2
+## compile
+go build
+## run
+./fileboy
+```
 ## 使用
 
 fileboy 的正常运行依赖于 `filegirl.yaml` 配置，所以首次在项目中使用需要初始化 `filegirl.yaml`。  
-
 - 进入你想要 hot reload 的项目主目录下；  
-
 - 运行 `fileboy init`，会在该目录下生成 `filegirl.yaml`文件；  
-
 - 查看 `filegirl.yaml`,修改为适合自己项目的配置项；  
-
 - 运行 `fileboy`即可.  
-
-  如果你定义了 `command -> exec`命令，想事先确认是否能正常执行，可以运行 `fileboy exec`命令，系统会尝试运行你的自定义命令。  
-
+  
+如果你定义了 `command -> exec`命令，想事先确认是否能正常执行，可以运行 `fileboy exec`命令，系统会尝试运行你的自定义命令。  
 你可以使用 `fileboy help`查看使用帮助。  
+___  
+The normal operation of fileboy depends on the `filegirl.yaml` configuration, so for the first time in a project, `filegirl.yaml` needs to be initialized.  
+- Enter the project home directory where you want hot reload;  
+- Running `fileboy init` will generate `filegirl. yaml` files in this directory.  
+- View `filegirl. yaml` and modify it to a configuration item suitable for your project.  
+- Run `fileboy`.  
+  
+If you define the `command-> exec` command, you can run the `fileboy exec` command to confirm whether it can be executed properly in advance. The system will try to run your custom command.  
+You can use `fileboy help` to see help info.  
 
 ## filegirl.yaml 配置文件说明
 
@@ -131,6 +159,69 @@ notifier:
     # 不启用通知，请留空 ""
     callUrl: ""
 ```
+___  
+```yaml
+core:
+    # config version code
+    version: 1
+
+# monitor section
+monitor:
+    # directories to monitor
+    # test1       listen for the test1 directory in the project directory
+    # test1/test2 listen for the test1/test2 directory in the project directory
+    # test1,*     listen for the test1 directory in the project directory and all its subdirectories (recursion)
+    # .,*         listen for the project directory and all its subdirectories (recursion)
+    includeDirs:
+        - .,*
+
+    # Unmonitored directories
+    # .idea   ignore listening to .idea directory and all its subdirectories
+    exceptDirs:
+        - .idea
+        - .git
+        - .vscode
+        - node_modules
+        - vendor
+
+    # the suffix of the listener file, which changes the file to execute commands
+    # .go   file changes suffixed with .go execute commands
+    # .*    all file changes execute commands in the command
+    types:
+        - .go
+
+command:
+    # the files monitored have commands that change to be executed
+    # there can be multiple commands that will be executed in turn
+    # in case of interactive commands, allow external access to input
+    # variable placeholders are supported, and the actual values are replaced when the command is run:
+    #    {{file}}    (e.g: a.txt 、test/test2/a.go)
+    #    {{ext}}     (e.g: .go)
+    #    {{changed}} local timestamp for file updated(nanosecond,e.g 1537326690523046400)
+    # variable placeholders e.g：cp {{file}} /root/sync -rf  、 myCommand --{{ext}} {{changed}}
+    exec:
+        - go version
+        - go env
+
+    # the command will not execute until XX milliseconds after the file changes
+    # a change event (A) cancels execution if there is a new file change event (B) within the defined delay time (t).
+    # B and subsequent events are analogized in turn until event Z does not produce new events within t, and Z executes.
+    # reasonable setting of delay time will effectively reduce redundancy and duplicate task execution.
+    # If this feature is not required, set to 0
+    delayMillSecond: 2000
+
+notifier:
+    # file changes send requests to the URL (POST JSON text data)
+    # the timing of triggering the request is consistent with executing the command command
+    # timeout 15 second
+    # POST :
+    #    Content-Type: application/json;charset=UTF-8
+    #    User-Agent: FileBoy Net Notifier v1.8
+    #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    # e.g: http://example.com/notifier/fileboy-listener
+    # no notice is enabled. Please leave it blank. ""
+    callUrl: ""
+```
 
 ### TODO
 
@@ -142,8 +233,15 @@ notifier:
 - [x] 支持 http 通知  
 - [x] 支持冗余任务丢弃  
 - [ ] 支持 http 合并任务的通知  
-
-
+___  
+- [x] command supports variable placeholders  
+- [x] Supports multiple commands  
+- [x] Supports listening for specified folders  
+- [x] Supports not listening to specified folders  
+- [x] Supports listening for specified suffix files  
+- [x] Supports HTTP notifications  
+- [x] Supports redundant task discarding  
+- [ ] Notification supporting HTTP merge tasks  
 
 ## QA
 
@@ -154,7 +252,6 @@ notifier:
 #### fileboy 可以应用在那些具体的场景？  
 
 在开发中，我们很需要一款可以帮助我们自动打包编译的工具，那 fileboy 就非常适合这样的场景。比如 go 项目的热编译，让我们可以边修改代码边运行得到反馈。又比如 PHP Swoole 框架，由于常驻进程的原因，无法更改代码立即reload，使用 fileboy 就可以辅助做到传统 PHP 开发的体验。  
-
 对于一些需要监控文件日志或者配置变动的场景， fileboy 同样适合。你可以事先编写好相应的通知报警脚本，然后定义`filegirl.yaml`中的`command`命令，交由 fileboy 自动运行监控报警。  
 
 #### 通知器在什么时候会发送 http 请求 ?
@@ -168,17 +265,11 @@ notifier:
 #### filegirl.yaml 里面的 command 不支持复杂的命令吗？  
 
 对于“很复杂的命令”这种说法很难去定义，比如 `echo "hello world"`并不复杂，但是对于 fileboy 来讲，目前无法解析这种命令。  
-
 fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中不能有""符号或者有空格。如：  
-
 `go build`:支持；  
-
 `go env`:支持;  
-
 `php swoole start --daemon`:支持  
-
 `cat a.txt | grep "q" | wc -l`:不支持  
-
 对于不支持的命令，可以把它写到一个文件里，然后在 command 中执行这个文件来解决。  
 
 #### 为什么起名为 fileboy，又把配置名叫做 filegirl ？
