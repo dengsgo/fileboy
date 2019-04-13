@@ -46,7 +46,7 @@ Gitee:  [dowmload v1.9](https://gitee.com/dengsgo/fileboy/releases)
 
 下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
 ___  
-Download the compiled binary file of the corresponding platform, rename it `fileboy', and add it to the system Path.  
+Download the compiled binary file of the corresponding platform, rename it `fileboy`, and add it to the system Path.  
 
 ### 源码编译   
 
