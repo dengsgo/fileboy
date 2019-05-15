@@ -47,10 +47,12 @@ func parseConfig() {
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		log.Panicln(PreError, "parsed filegirl.yaml failed: ", err)
+		log.Println(PreError, "parsed filegirl.yaml failed: ", err)
+		os.Exit(0)
 	}
 	if cfg.Core.Version > Version {
-		log.Panicln(PreError, "current fileboy support max version : ", Version)
+		log.Println(PreError, "current fileboy support max version : ", Version)
+		os.Exit(0)
 	}
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
