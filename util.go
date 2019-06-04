@@ -65,6 +65,6 @@ func relativePath(folder, p string) string {
 }
 
 func logAndExit(v ...interface{}) {
-	log.Println(v)
+	log.Println(v...)
 	os.Exit(0)
 }
