@@ -52,10 +52,10 @@ func (t *TaskMan) preRun(cf *changedFile) {
 		}
 	}
 	go t.run(cf)
+	go t.notifier.Put(cf)
 }
 
 func (t *TaskMan) run(cf *changedFile) {
-	go t.notifier.Put(cf)
 	t.runLock.Lock()
 	defer t.runLock.Unlock()
 	for i := 0; i < len(cfg.Command.Exec); i++ {
