@@ -1,3 +1,12 @@
+### Release v1.10
+
+2019.06.04  
+
+- 优化 log  
+- 优化 代码逻辑  
+- 修复 gin框架hotReload  
+
+
 ### Release v1.9
 
 2019.04.03  
