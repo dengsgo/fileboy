@@ -43,16 +43,14 @@ func parseConfig() {
 	if err != nil {
 		log.Println(PreError, "the filegirl.yaml file in", projectFolder, "is not exist! ", err)
 		fmt.Print(firstRunHelp)
-		log.Fatalln("fileboy unable to run.")
+		logAndExit("fileboy unable to run.")
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		log.Println(PreError, "parsed filegirl.yaml failed: ", err)
-		os.Exit(0)
+		logAndExit(PreError, "parsed filegirl.yaml failed: ", err)
 	}
 	if cfg.Core.Version > Version {
-		log.Println(PreError, "current fileboy support max version : ", Version)
-		os.Exit(0)
+		logAndExit(PreError, "current fileboy support max version : ", Version)
 	}
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
@@ -95,10 +93,10 @@ func addWatcher() {
 	for _, dir := range cfg.Monitor.IncludeDirs {
 		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
-			log.Fatalln(PreError, "filegirl section monitor dirs is error. ", dir)
+			logAndExit(PreError, "filegirl section monitor dirs is error. ", dir)
 		}
 		if strings.HasPrefix(darr[0], "/") {
-			log.Fatalln(PreError, "dirs must be relative paths ! err path:", dir)
+			logAndExit(PreError, "dirs must be relative paths ! err path:", dir)
 		}
 		if darr[0] == "." {
 			if len(darr) == 2 && darr[1] == "*" {
@@ -126,7 +124,7 @@ func addWatcher() {
 	}
 	for _, dir := range cfg.Monitor.ExceptDirs {
 		if dir == "." {
-			log.Fatalln(PreError, "exceptDirs must is not project root path ! err path:", dir)
+			logAndExit(PreError, "exceptDirs must is not project root path ! err path:", dir)
 		}
 		p := projectFolder + "/" + dir
 		delete(dirsMap, p)
@@ -138,7 +136,7 @@ func addWatcher() {
 		log.Println("watcher add -> ", dir)
 		err := watcher.Add(dir)
 		if err != nil {
-			log.Fatalln(err)
+			logAndExit(err)
 		}
 	}
 	log.Println("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
@@ -153,7 +151,7 @@ func initWatcher() {
 	}
 	watcher, err = fsnotify.NewWatcher()
 	if err != nil {
-		log.Fatalln(err)
+		logAndExit(err)
 	}
 	taskMan = newTaskMan(cfg.Command.DelayMillSecond, cfg.Notifier.CallUrl)
 	go func() {
@@ -206,7 +204,7 @@ func parseArgs() {
 		}
 		return
 	default:
-		log.Fatalln("Unknown parameters, use `fileboy help` show help info.")
+		logAndExit("Unknown parameters, use `fileboy help` show help info.")
 	}
 }
 
@@ -225,7 +223,7 @@ func main() {
 	var err error
 	projectFolder, err = os.Getwd()
 	if err != nil {
-		log.Fatalln(err)
+		logAndExit(err)
 	}
 	parseArgs()
 }

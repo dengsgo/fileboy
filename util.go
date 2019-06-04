@@ -2,6 +2,8 @@ package main
 
 import (
 	"io/ioutil"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -60,4 +62,9 @@ func relativePath(folder, p string) string {
 		s = s[1:]
 	}
 	return s
+}
+
+func logAndExit(v ...interface{}) {
+	log.Println(v)
+	os.Exit(0)
 }
