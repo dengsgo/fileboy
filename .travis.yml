@@ -5,4 +5,11 @@ go:
   - 1.12.x
   - master
 
-script: go build
+script:
+  - go build 
+  - ./fileboy version
+  - ./fileboy help
+  - ./fileboy init
+  - cat filegirl.yaml
+  - ./fileboy exec 
+
