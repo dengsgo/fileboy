@@ -87,9 +87,7 @@ func eventDispatcher(event fsnotify.Event) {
 
 func addWatcher() {
 	log.Println("collecting directory information...")
-	dirsMap := map[string]bool{
-		projectFolder: true,
-	}
+	dirsMap := map[string]bool{}
 	for _, dir := range cfg.Monitor.IncludeDirs {
 		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
