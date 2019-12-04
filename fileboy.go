@@ -219,6 +219,7 @@ func show() {
 func main() {
 	log.SetPrefix("[FileBoy]: ")
 	log.SetFlags(2)
+	log.SetOutput(os.Stdout)
 	show()
 	var err error
 	projectFolder, err = os.Getwd()
