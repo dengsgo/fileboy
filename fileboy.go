@@ -29,12 +29,21 @@ var (
 	watcher *fsnotify.Watcher
 
 	taskMan *TaskMan
+
+	ioeventMapStr = map[fsnotify.Op]string{
+		fsnotify.Write:  "write",
+		fsnotify.Rename: "rename",
+		fsnotify.Remove: "remove",
+		fsnotify.Create: "create",
+		fsnotify.Chmod:  "chmod",
+	}
 )
 
 type changedFile struct {
 	Name    string
 	Changed int64
 	Ext     string
+	Event   string
 }
 
 func parseConfig() {
@@ -70,19 +79,18 @@ func eventDispatcher(event fsnotify.Event) {
 		!keyInMonitorTypesMap(ext, cfg) {
 		return
 	}
-	switch event.Op {
-	case
-		fsnotify.Write,
-		fsnotify.Rename:
-		log.Println("EVENT", event.Op.String(), ":", event.Name)
-		taskMan.Put(&changedFile{
-			Name:    relativePath(projectFolder, event.Name),
-			Changed: time.Now().UnixNano(),
-			Ext:     ext,
-		})
-	case fsnotify.Remove:
-	case fsnotify.Create:
+
+	op := ioeventMapStr[event.Op]
+	if len(cfg.Monitor.Events) != 0 && !inStrArray(op, cfg.Monitor.Events) {
+		return
 	}
+	log.Println("EVENT", event.Op.String(), ":", event.Name)
+	taskMan.Put(&changedFile{
+		Name:    relativePath(projectFolder, event.Name),
+		Changed: time.Now().UnixNano(),
+		Ext:     ext,
+		Event:   op,
+	})
 }
 
 func addWatcher() {

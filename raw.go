@@ -32,6 +32,20 @@ monitor:
     types:
         - .go
 
+    # 监听的事件类型，发生此类事件才执行 command 中的命令
+    # 没有该配置默认监听所有事件
+    # write   写入文件事件
+    # rename  重命名文件事件
+    # remove  移除文件事件
+    # create  创建文件事件
+    # chmod   更新文件权限事件(类unix)
+    events:
+        - write
+        - rename
+        - remove
+        - create
+        - chmod
+
 # 命令
 command:
     # 监听的文件有更改会执行的命令

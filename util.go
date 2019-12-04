@@ -25,12 +25,15 @@ func cmdParse2Array(s string, cf *changedFile) []string {
 }
 
 func strParseRealStr(s string, cf *changedFile) string {
-	return strings.Replace(
-		strings.Replace(
-			strings.Replace(s, "{{file}}", cf.Name, -1),
-			"{{ext}}", cf.Ext, -1,
+	return strings.ReplaceAll(
+		strings.ReplaceAll(
+			strings.ReplaceAll(
+				strings.ReplaceAll(s, "{{file}}", cf.Name),
+				"{{ext}}", cf.Ext,
+			),
+			"{{changed}}", strconv.FormatInt(cf.Changed, 10),
 		),
-		"{{changed}}", strconv.FormatInt(cf.Changed, 10), -1,
+		"{{event}}", cf.Event,
 	)
 }
 
@@ -62,6 +65,15 @@ func relativePath(folder, p string) string {
 		s = s[1:]
 	}
 	return s
+}
+
+func inStrArray(s string, arr []string) bool {
+	for _, v := range arr {
+		if s == v {
+			return true
+		}
+	}
+	return false
 }
 
 func logAndExit(v ...interface{}) {

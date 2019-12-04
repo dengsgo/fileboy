@@ -14,6 +14,7 @@ type postParams struct {
 	File          string `json:"file"`
 	Changed       int64  `json:"changed"`
 	Ext           string `json:"ext"`
+	Event         string `json:"event"`
 }
 
 type NetNotifier struct {
@@ -42,6 +43,7 @@ func (n *NetNotifier) Put(cf *changedFile) {
 		File:          cf.Name,
 		Changed:       cf.Changed,
 		Ext:           cf.Ext,
+		Event:         cf.Event,
 	})
 }
 

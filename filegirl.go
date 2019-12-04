@@ -8,6 +8,7 @@ type FileGirl struct {
 		Types       []string `yaml:"types"`
 		IncludeDirs []string `yaml:"includeDirs"`
 		ExceptDirs  []string `yaml:"exceptDirs"`
+		Events      []string `yaml:"events"`
 		// convert to
 		TypesMap       map[string]bool `yaml:"-"`
 		IncludeDirsMap map[string]bool `yaml:"-"`
