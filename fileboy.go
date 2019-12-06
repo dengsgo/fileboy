@@ -65,6 +65,7 @@ func parseConfig() {
 	cfg.Monitor.TypesMap = map[string]bool{}
 	cfg.Monitor.IncludeDirsMap = map[string]bool{}
 	cfg.Monitor.ExceptDirsMap = map[string]bool{}
+	cfg.Monitor.IncludeDirsRec = map[string]bool{}
 	// convert to map
 	for _, v := range cfg.Monitor.Types {
 		cfg.Monitor.TypesMap[v] = true
@@ -113,6 +114,7 @@ func addWatcher() {
 				listFile(projectFolder, func(d string) {
 					dirsMap[d] = true
 				})
+				cfg.Monitor.IncludeDirsRec[projectFolder] = true
 				break
 			} else {
 				dirsMap[projectFolder] = true
@@ -124,6 +126,7 @@ func addWatcher() {
 				listFile(md, func(d string) {
 					dirsMap[d] = true
 				})
+				cfg.Monitor.IncludeDirsRec[md] = true
 			}
 		}
 
@@ -167,6 +170,9 @@ func initWatcher() {
 				if !ok {
 					return
 				}
+				// directory structure changes, dynamically add, delete and monitor according to rules
+				// TODO // this method cannot be triggered when the parent folder of the change folder is not monitored
+				go watchChangeHandler(event)
 				eventDispatcher(event)
 			case err, ok := <-watcher.Errors:
 				if !ok {
@@ -177,6 +183,56 @@ func initWatcher() {
 		}
 	}()
 	addWatcher()
+}
+
+func watchChangeHandler(event fsnotify.Event) {
+	if event.Op != fsnotify.Create && event.Op != fsnotify.Rename {
+		return
+	}
+	_, err := ioutil.ReadDir(event.Name)
+	if err != nil {
+		return
+	}
+	do := false
+	for rec := range cfg.Monitor.IncludeDirsRec {
+		if !strings.HasPrefix(event.Name, rec) {
+			continue
+		}
+		// check exceptDirs
+		has := false
+		for _, v := range cfg.Monitor.ExceptDirs {
+			if strings.HasPrefix(event.Name, projectFolder+"/"+v) {
+				has = true
+			}
+		}
+		if has {
+			continue
+		}
+
+		_ = watcher.Remove(event.Name)
+		err := watcher.Add(event.Name)
+		if err == nil {
+			do = true
+			log.Println("watcher add -> ", event.Name)
+		} else {
+			log.Println(PreWarn, "watcher add faild:", event.Name, err)
+		}
+	}
+
+	if do {
+		return
+	}
+
+	// check map
+	if _, ok := cfg.Monitor.DirsMap[event.Name]; ok {
+		_ = watcher.Remove(event.Name)
+		err := watcher.Add(event.Name)
+		if err == nil {
+			log.Println("watcher add -> ", event.Name)
+		} else {
+			log.Println(PreWarn, "watcher add faild:", event.Name, err)
+		}
+	}
 }
 
 func parseArgs() {

@@ -14,6 +14,8 @@ type FileGirl struct {
 		IncludeDirsMap map[string]bool `yaml:"-"`
 		ExceptDirsMap  map[string]bool `yaml:"-"`
 		DirsMap        map[string]bool `yaml:"-"`
+
+		IncludeDirsRec map[string]bool `yaml:"-"`
 	}
 	Command struct {
 		Exec            []string `yaml:"exec"`
