@@ -145,7 +145,7 @@ func addWatcher() {
 		log.Println("watcher add -> ", dir)
 		err := watcher.Add(dir)
 		if err != nil {
-			logAndExit(err)
+			logAndExit(PreError, err)
 		}
 	}
 	log.Println("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
