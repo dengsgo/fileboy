@@ -1,0 +1,15 @@
+    
+language: go
+
+go:
+  - 1.13.x
+  - master
+
+script:
+  - go build 
+  - ./fileboy version
+  - ./fileboy help
+  - ./fileboy init
+  - cat filegirl.yaml
+  - ./fileboy exec 
+

@@ -29,12 +29,21 @@ var (
 	watcher *fsnotify.Watcher
 
 	taskMan *TaskMan
+
+	ioeventMapStr = map[fsnotify.Op]string{
+		fsnotify.Write:  "write",
+		fsnotify.Rename: "rename",
+		fsnotify.Remove: "remove",
+		fsnotify.Create: "create",
+		fsnotify.Chmod:  "chmod",
+	}
 )
 
 type changedFile struct {
 	Name    string
 	Changed int64
 	Ext     string
+	Event   string
 }
 
 func parseConfig() {
@@ -56,6 +65,7 @@ func parseConfig() {
 	cfg.Monitor.TypesMap = map[string]bool{}
 	cfg.Monitor.IncludeDirsMap = map[string]bool{}
 	cfg.Monitor.ExceptDirsMap = map[string]bool{}
+	cfg.Monitor.IncludeDirsRec = map[string]bool{}
 	// convert to map
 	for _, v := range cfg.Monitor.Types {
 		cfg.Monitor.TypesMap[v] = true
@@ -70,26 +80,23 @@ func eventDispatcher(event fsnotify.Event) {
 		!keyInMonitorTypesMap(ext, cfg) {
 		return
 	}
-	switch event.Op {
-	case
-		fsnotify.Write,
-		fsnotify.Rename:
-		log.Println("EVENT", event.Op.String(), ":", event.Name)
-		taskMan.Put(&changedFile{
-			Name:    relativePath(projectFolder, event.Name),
-			Changed: time.Now().UnixNano(),
-			Ext:     ext,
-		})
-	case fsnotify.Remove:
-	case fsnotify.Create:
+
+	op := ioeventMapStr[event.Op]
+	if len(cfg.Monitor.Events) != 0 && !inStrArray(op, cfg.Monitor.Events) {
+		return
 	}
+	log.Println("EVENT", event.Op.String(), ":", event.Name)
+	taskMan.Put(&changedFile{
+		Name:    relativePath(projectFolder, event.Name),
+		Changed: time.Now().UnixNano(),
+		Ext:     ext,
+		Event:   op,
+	})
 }
 
 func addWatcher() {
 	log.Println("collecting directory information...")
-	dirsMap := map[string]bool{
-		projectFolder: true,
-	}
+	dirsMap := map[string]bool{}
 	for _, dir := range cfg.Monitor.IncludeDirs {
 		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
@@ -107,6 +114,7 @@ func addWatcher() {
 				listFile(projectFolder, func(d string) {
 					dirsMap[d] = true
 				})
+				cfg.Monitor.IncludeDirsRec[projectFolder] = true
 				break
 			} else {
 				dirsMap[projectFolder] = true
@@ -118,6 +126,7 @@ func addWatcher() {
 				listFile(md, func(d string) {
 					dirsMap[d] = true
 				})
+				cfg.Monitor.IncludeDirsRec[md] = true
 			}
 		}
 
@@ -136,7 +145,7 @@ func addWatcher() {
 		log.Println("watcher add -> ", dir)
 		err := watcher.Add(dir)
 		if err != nil {
-			logAndExit(err)
+			logAndExit(PreError, err)
 		}
 	}
 	log.Println("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
@@ -161,6 +170,9 @@ func initWatcher() {
 				if !ok {
 					return
 				}
+				// directory structure changes, dynamically add, delete and monitor according to rules
+				// TODO // this method cannot be triggered when the parent folder of the change folder is not monitored
+				go watchChangeHandler(event)
 				eventDispatcher(event)
 			case err, ok := <-watcher.Errors:
 				if !ok {
@@ -171,6 +183,56 @@ func initWatcher() {
 		}
 	}()
 	addWatcher()
+}
+
+func watchChangeHandler(event fsnotify.Event) {
+	if event.Op != fsnotify.Create && event.Op != fsnotify.Rename {
+		return
+	}
+	_, err := ioutil.ReadDir(event.Name)
+	if err != nil {
+		return
+	}
+	do := false
+	for rec := range cfg.Monitor.IncludeDirsRec {
+		if !strings.HasPrefix(event.Name, rec) {
+			continue
+		}
+		// check exceptDirs
+		has := false
+		for _, v := range cfg.Monitor.ExceptDirs {
+			if strings.HasPrefix(event.Name, projectFolder+"/"+v) {
+				has = true
+			}
+		}
+		if has {
+			continue
+		}
+
+		_ = watcher.Remove(event.Name)
+		err := watcher.Add(event.Name)
+		if err == nil {
+			do = true
+			log.Println("watcher add -> ", event.Name)
+		} else {
+			log.Println(PreWarn, "watcher add faild:", event.Name, err)
+		}
+	}
+
+	if do {
+		return
+	}
+
+	// check map
+	if _, ok := cfg.Monitor.DirsMap[event.Name]; ok {
+		_ = watcher.Remove(event.Name)
+		err := watcher.Add(event.Name)
+		if err == nil {
+			log.Println("watcher add -> ", event.Name)
+		} else {
+			log.Println(PreWarn, "watcher add faild:", event.Name, err)
+		}
+	}
 }
 
 func parseArgs() {
@@ -219,6 +281,7 @@ func show() {
 func main() {
 	log.SetPrefix("[FileBoy]: ")
 	log.SetFlags(2)
+	log.SetOutput(os.Stdout)
 	show()
 	var err error
 	projectFolder, err = os.Getwd()
