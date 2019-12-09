@@ -16,6 +16,7 @@ notifications:
 
 script:
   - make init
-  - make build-mac
-  - make start-mac
+  - make build-linux
+  - ls bin
+  - make start-linux
 
