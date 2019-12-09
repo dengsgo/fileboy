@@ -5,11 +5,17 @@ go:
   - 1.13.x
   - master
 
+
+notifications:
+  email:
+    recipients:
+      - 3048789891@qq.com
+    on_success: change # default: change
+    on_failure: always # default: always
+
+
 script:
-  - go build 
-  - ./fileboy version
-  - ./fileboy help
-  - ./fileboy init
-  - cat filegirl.yaml
-  - ./fileboy exec 
+  - make init
+  - make build-mac
+  - make start-mac
 

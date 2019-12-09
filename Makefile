@@ -25,15 +25,21 @@ build-win: ;@echo "编译-windows版";
 build-all: build-mac build-linux build-win
 
 start-linux: ;@echo "启动服务";
+	./bin/fileboy-linux-amd64.bin help
 	./bin/fileboy-linux-amd64.bin init
+	cat filegirl.yaml
 	./bin/fileboy-linux-amd64.bin
 
 start-mac: ;@echo "启动服务";
+	./bin/fileboy-darwin-amd64.bin help
 	./bin/fileboy-darwin-amd64.bin init
+	cat filegirl.yaml
 	./bin/fileboy-darwin-amd64.bin
 
 start-win: ;@echo "启动服务";
+	./bin/fileboy-windows-amd64.exe help
 	./bin/fileboy-windows-amd64.exe init
+	cat filegirl.yaml
 	./bin/fileboy-windows-amd64.exe
 
 build-start-mac: build-mac start-mac
