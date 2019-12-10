@@ -18,5 +18,5 @@ script:
   - make init
   - make build-linux
   - ls bin
-  - make start-linux
+  - make travis-linux
 

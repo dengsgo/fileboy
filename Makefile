@@ -24,24 +24,22 @@ build-win: ;@echo "编译-windows版";
 
 build-all: build-mac build-linux build-win
 
-start-linux: ;@echo "启动服务";
-	./bin/fileboy-linux-amd64.bin help
-	./bin/fileboy-linux-amd64.bin init
-	./bin/fileboy-linux-amd64.bin version
-	./bin/fileboy-linux-amd64.bin
-
 start-mac: ;@echo "启动服务";
-	./bin/fileboy-darwin-amd64.bin help
 	./bin/fileboy-darwin-amd64.bin init
-	./bin/fileboy-darwin-amd64.bin version
 	./bin/fileboy-darwin-amd64.bin
 
+start-linux: ;@echo "启动服务";
+	./bin/fileboy-linux-amd64.bin init
+	./bin/fileboy-linux-amd64.bin
+
+travis-linux:
+	./bin/fileboy-linux-amd64.bin init
+	./bin/fileboy-linux-amd64.bin exec
+
 start-win: ;@echo "启动服务";
-	./bin/fileboy-windows-amd64.exe help
 	./bin/fileboy-windows-amd64.exe init
-	./bin/fileboy-windows-amd64.exe version
 	./bin/fileboy-windows-amd64.exe
 
 build-start-mac: build-mac start-mac
 
-.PHONY: build-mac build-linux build-win build-all start-linux start-mac start-win build-start-mac
+.PHONY: build-mac build-linux build-win build-all start-linux travis-linux start-mac start-win build-start-mac
