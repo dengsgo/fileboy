@@ -32,10 +32,6 @@ start-linux: ;@echo "启动服务";
 	./bin/fileboy-linux-amd64.bin init
 	./bin/fileboy-linux-amd64.bin
 
-travis-linux:
-	./bin/fileboy-linux-amd64.bin init
-	./bin/fileboy-linux-amd64.bin exec
-
 start-win: ;@echo "启动服务";
 	./bin/fileboy-windows-amd64.exe init
 	./bin/fileboy-windows-amd64.exe
