@@ -5,11 +5,17 @@ go:
   - 1.13.x
   - master
 
+
+dist: bionic # ubuntu 18.04
+
+
 script:
-  - go build 
-  - ./fileboy version
-  - ./fileboy help
-  - ./fileboy init
+  - make init
+  - make build-linux
+  - ls bin
+  - ./bin/fileboy-linux-amd64.bin version
+  - ./bin/fileboy-linux-amd64.bin help
+  - ./bin/fileboy-linux-amd64.bin init
   - cat filegirl.yaml
-  - ./fileboy exec 
+  - ./bin/fileboy-linux-amd64.bin exec
 
