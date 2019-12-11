@@ -13,5 +13,9 @@ script:
   - make init
   - make build-linux
   - ls bin
-  - make travis-linux
+  - ./bin/fileboy-linux-amd64.bin version
+  - ./bin/fileboy-linux-amd64.bin help
+  - ./bin/fileboy-linux-amd64.bin init
+  - cat filegirl.yaml
+  - ./bin/fileboy-linux-amd64.bin exec
 
