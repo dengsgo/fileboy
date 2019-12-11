@@ -6,12 +6,7 @@ go:
   - master
 
 
-notifications:
-  email:
-    recipients:
-      - 3048789891@qq.com
-    on_success: change # default: change
-    on_failure: always # default: always
+dist: bionic # ubuntu 18.04
 
 
 script:
