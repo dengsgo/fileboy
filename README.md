@@ -51,7 +51,7 @@ go build
 
 ## 使用
 
-fileboy 的正常运行依赖于 `filegirl.yaml` 配置，所以首次在项目中使用需要初始化 `filegirl.yaml`。  
+fileboy 的正常运行依赖于 `filegirl.yaml` 配置文件，因此首次在项目中使用需要初始化 `filegirl.yaml`。  
 - 进入你想要 hot reload 的项目主目录下；  
 - 运行 `fileboy init`，会在该目录下生成 `filegirl.yaml`文件；  
 - 查看 `filegirl.yaml`,修改为适合自己项目的配置项；  
@@ -151,6 +151,7 @@ notifier:
 - [x] 支持监听指定文件夹  
 - [x] 支持不监听指定文件夹  
 - [x] 支持监听指定后缀文件  
+- [x] 支持自定事件监听  
 - [x] 支持 http 通知  
 - [x] 支持冗余任务丢弃  
 - [ ] 支持 http 合并任务的通知  
@@ -174,9 +175,8 @@ notifier:
 
 由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。1.5之后的版本增加了 `delayMillSecond` 参数，可以解决这个问题。  
 
-#### filegirl.yaml 里面的 command 不支持复杂的命令吗？  
+#### filegirl.yaml 里面的 command 如何配置复杂命令？  
 
-对于“很复杂的命令”这种说法很难去定义，比如 `echo "hello world"`并不复杂，但是对于 fileboy 来讲，目前无法解析这种命令。  
 fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中不能有""符号或者有空格。如：  
 `go build`:支持；  
 `go env`:支持;  
