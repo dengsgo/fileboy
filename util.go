@@ -78,5 +78,5 @@ func inStrArray(s string, arr []string) bool {
 
 func logAndExit(v ...interface{}) {
 	log.Println(v...)
-	os.Exit(0)
+	os.Exit(15)
 }

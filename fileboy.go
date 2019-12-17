@@ -24,6 +24,8 @@ const (
 var (
 	projectFolder = "."
 
+	filegirlYamlName = "filegirl.yaml"
+
 	cfg *FileGirl
 
 	watcher *fsnotify.Watcher
@@ -48,18 +50,18 @@ type changedFile struct {
 
 func parseConfig() {
 	cfg = new(FileGirl)
-	fc, err := ioutil.ReadFile(projectFolder + "/filegirl.yaml")
+	fc, err := ioutil.ReadFile(getFileGirlPath())
 	if err != nil {
-		log.Println(PreError, "the filegirl.yaml file in", projectFolder, "is not exist! ", err)
+		log.Println(PreError, "The filegirl.yaml file in", projectFolder, "is not exist! ", err)
 		fmt.Print(firstRunHelp)
-		logAndExit("fileboy unable to run.")
+		logAndExit("Fileboy unable to run.")
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		logAndExit(PreError, "parsed filegirl.yaml failed: ", err)
+		logAndExit(PreError, "Parsed filegirl.yaml failed: ", err)
 	}
 	if cfg.Core.Version > Version {
-		logAndExit(PreError, "current fileboy support max version : ", Version)
+		logAndExit(PreError, "Current fileboy support max version : ", Version)
 	}
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
@@ -248,12 +250,17 @@ func parseArgs() {
 		c := os.Args[1]
 		switch c {
 		case "init":
-			err := ioutil.WriteFile(projectFolder+"/filegirl.yaml", []byte(exampleFileGirl), 0644)
+			_, err := ioutil.ReadFile(getFileGirlPath())
+			if err == nil {
+				log.Println(PreError, "Profile filegirl.yaml already exists.")
+				logAndExit("If you want to regenerate filegirl.yaml, delete it first")
+			}
+			err = ioutil.WriteFile(getFileGirlPath(), []byte(exampleFileGirl), 0644)
 			if err != nil {
-				log.Println(PreError, "error create filegirl.yaml config! ", err)
+				log.Println(PreError, "Profile filegirl.yaml create failed! ", err)
 				return
 			}
-			log.Println("create filegirl.yaml ok")
+			log.Println("Profile filegirl.yaml created ok")
 			return
 		case "exec":
 			parseConfig()
@@ -268,6 +275,10 @@ func parseArgs() {
 	default:
 		logAndExit("Unknown parameters, use `fileboy help` show help info.")
 	}
+}
+
+func getFileGirlPath() string {
+	return projectFolder + "/" + filegirlYamlName
 }
 
 func show() {
