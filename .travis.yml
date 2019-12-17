@@ -13,9 +13,10 @@ script:
   - make init
   - make build-linux
   - ls bin
-  - ./bin/fileboy-linux-amd64.bin version
-  - ./bin/fileboy-linux-amd64.bin help
-  - ./bin/fileboy-linux-amd64.bin init
+  - cp bin/fileboy-linux-amd64.bin ./fileboy
+  - ./fileboy version
+  - ./fileboy help
+  - ./fileboy init
   - cat filegirl.yaml
-  - ./bin/fileboy-linux-amd64.bin exec
+  - ./fileboy exec
 
