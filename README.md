@@ -31,8 +31,8 @@ go version 1.13
 
 ### 下载二进制文件   
 
-Github: [download v1.10](https://github.com/dengsgo/fileboy/releases)  
-Gitee:  [dowmload v1.10](https://gitee.com/dengsgo/fileboy/releases)  
+Github: [download v1.12](https://github.com/dengsgo/fileboy/releases)  
+Gitee:  [dowmload v1.12](https://gitee.com/dengsgo/fileboy/releases)  
 
 下载已经编译好的对应平台二进制文件，重命名为`fileboy`, 加入系统 Path 中即可。 
 
@@ -137,7 +137,7 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.10
+    #    User-Agent: FileBoy Net Notifier v1.12
     #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""

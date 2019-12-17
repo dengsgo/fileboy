@@ -32,8 +32,8 @@ go version 1.13
 
 ### BINARIES   
 
-Github: [download v1.10](https://github.com/dengsgo/fileboy/releases)  
-Gitee:  [dowmload v1.10](https://gitee.com/dengsgo/fileboy/releases)  
+Github: [download v1.12](https://github.com/dengsgo/fileboy/releases)  
+Gitee:  [dowmload v1.12](https://gitee.com/dengsgo/fileboy/releases)  
 
 Download the compiled binary file of the corresponding platform, rename it `fileboy`, and add it to the system Path.  
 
@@ -133,7 +133,7 @@ notifier:
     # timeout 15 second
     # POST :
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.10
+    #    User-Agent: FileBoy Net Notifier v1.12
     #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # e.g: http://example.com/notifier/fileboy-listener
     # no notice is enabled. Please leave it blank. ""

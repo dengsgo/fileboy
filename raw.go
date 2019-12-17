@@ -55,6 +55,7 @@ command:
     # 支持变量占位符,运行命令时会替换成实际值：
     #    {{file}}    文件名(如 a.txt 、test/test2/a.go)
     #    {{ext}}     文件后缀(如 .go)
+    #    {{event}}   事件(上面的events, 如 write)
     #    {{changed}} 文件更新的本地时间戳(纳秒,如 1537326690523046400)
     # 变量占位符使用示例：cp {{file}} /root/sync -rf  、 myCommand --{{ext}} {{changed}}
     exec:
@@ -62,7 +63,7 @@ command:
         - go env
 
     # 文件变更后命令在xx毫秒后才会执行，单位为毫秒
-    # 一个变更事件(A)如果在定义的延迟时间(t)内，又有新的文件变更事件(B)，那么A会取消执行。
+    # 一个变更事件(A)如果在定义的延迟时间(t)内, 又有新的文件变更事件(B), 那么A会取消执行。
     # B及以后的事件均依次类推，直到事件Z在t内没有新事件产生，Z 会执行
     # 合理设置延迟时间，将有效减少冗余和重复任务的执行
     # 如果不需要该特性，设置为 0
@@ -75,8 +76,8 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.10
-    #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    #    User-Agent: FileBoy Net Notifier v1.12
+    #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""
     callUrl: ""
@@ -118,13 +119,13 @@ var logo = `
  _____     _  | |      _____   ____)  ) |   | | |___| |
 |  ___)   | | | |     |  ___) |  __  (| |   | |\_____/ 
 | |      _| |_| |_____| |_____| |__)  ) |___| |  ___   
-|_|     (_____)_______)_______)______/ \_____/  (___)   V1.10
+|_|     (_____)_______)_______)______/ \_____/  (___)   V1.12
 `
 var statement = `Dengsgo [dengsgo@gmail.com] Open Source with MIT License`
 
 var versionDesc = `
- Version   fileboy: v1.10    filegirl: v` + strconv.Itoa(Version) + `
-Released   2019.6.4
+ Version   fileboy: v1.12    filegirl: v` + strconv.Itoa(Version) + `
+Released   2019.12.18
  Licence   MIT
   Author   dengsgo [dengsgo@gmail.com]
  Website   https://github.com/dengsgo/fileboy

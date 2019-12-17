@@ -1,3 +1,17 @@
+### Release v1.12
+
+2019.12.18  
+
+- 增加 自定义监控事件（write/rename/remove/create/chmod）  
+- 增加 {{event}} 事件名占位符 / event 网络通知字段  
+- 增加 文件(夹)变更动态添加/删除监听（beta）  
+- 优化 init 命令,如果已有`filegirl.yaml`现在提示错误,不会自动覆盖  
+- 优化 日志输出缓冲,可以通过 >> 将fileboy自身输出日志重定向到文件  
+- 修复 始终默认监听主目录的问题  
+- 升级 底层依赖  
+- PR Makefile 的支持 @jason-gao  
+
+
 ### Release v1.10
 
 2019.06.04  
