@@ -116,6 +116,7 @@ command:
     # 支持变量占位符,运行命令时会替换成实际值：
     #    {{file}}    文件名(如 a.txt 、test/test2/a.go)
     #    {{ext}}     文件后缀(如 .go)
+    #    {{event}}   事件(上面的events, 如 write)
     #    {{changed}} 文件更新的本地时间戳(纳秒,如 1537326690523046400)
     # 变量占位符使用示例：cp {{file}} /root/sync -rf  、 myCommand --{{ext}} {{changed}}
     exec:
@@ -137,7 +138,7 @@ notifier:
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
     #    User-Agent: FileBoy Net Notifier v1.10
-    #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""
     callUrl: ""

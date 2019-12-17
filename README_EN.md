@@ -113,6 +113,7 @@ command:
     # variable placeholders are supported, and the actual values are replaced when the command is run:
     #    {{file}}    (e.g: a.txt 、test/test2/a.go)
     #    {{ext}}     (e.g: .go)
+    #    {{event}}   event(e.g: write)
     #    {{changed}} local timestamp for file updated(nanosecond,e.g 1537326690523046400)
     # variable placeholders e.g：cp {{file}} /root/sync -rf  、 myCommand --{{ext}} {{changed}}
     exec:
@@ -133,7 +134,7 @@ notifier:
     # POST :
     #    Content-Type: application/json;charset=UTF-8
     #    User-Agent: FileBoy Net Notifier v1.10
-    #    Body: {"project_folder":"/watcher-dirs","file":"test.go","changed":1546421173070433800,"ext":".go"}
+    #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # e.g: http://example.com/notifier/fileboy-listener
     # no notice is enabled. Please leave it blank. ""
     callUrl: ""
