@@ -14,7 +14,7 @@ script:
   - make build-linux
   - ls bin
   - echo $PATH
-  - cp bin/fileboy-linux-amd64.bin /usr/local/bin/fileboy
+  - cp bin/fileboy-linux-amd64.bin /home/travis/bin/fileboy
   - fileboy version
   - fileboy help
   - fileboy init
