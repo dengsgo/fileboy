@@ -238,17 +238,32 @@ func watchChangeHandler(event fsnotify.Event) {
 }
 
 func parseArgs() {
-	switch len(os.Args) {
-	case 1:
+	switch {
+	case len(os.Args) == 1:
 		parseConfig()
 		done := make(chan bool)
 		initWatcher()
 		defer watcher.Close()
 		<-done
 		return
-	case 2:
+	case len(os.Args) > 1:
 		c := os.Args[1]
 		switch c {
+		case "deamon":
+			pid, err := runAsDeamon()
+			if err != nil {
+				logAndExit(PreError, err)
+			}
+			log.Println("PID:", pid)
+			log.Println("fileboy is ready. the main process will run as a daemons")
+			return
+		case "stop":
+			err := stopDeamon()
+			if err != nil {
+				logAndExit(PreError, err)
+			}
+			log.Println("fileboy daemon is stoped.")
+			return
 		case "init":
 			_, err := ioutil.ReadFile(getFileGirlPath())
 			if err == nil {

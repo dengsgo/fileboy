@@ -96,6 +96,10 @@ Usage of fileboy:
         初始化 fileboy, 在当前目录生成 filegirl.yaml 配置文件
     exec 
         尝试运行定义的 command 命令
+    deamon 
+        读取当前目录下的 filegirl.yaml 配置，以守护进程的方式运行在后台
+    stop 
+        停止守护进程
     version 
         查看当前版本信息
 `
