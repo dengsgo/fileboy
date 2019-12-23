@@ -13,10 +13,13 @@ script:
   - make init
   - make build-linux
   - ls bin
-  - cp bin/fileboy-linux-amd64.bin ./fileboy
-  - ./fileboy version
-  - ./fileboy help
-  - ./fileboy init
+  - cp bin/fileboy-linux-amd64.bin /usr/local/bin/fileboy
+  - fileboy version
+  - fileboy help
+  - fileboy init
   - cat filegirl.yaml
-  - ./fileboy exec
+  - fileboy exec
+  - fileboy deamon
+  - cat .fileboy.pid
+  - fileboy stop
 
