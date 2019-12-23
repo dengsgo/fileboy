@@ -13,6 +13,7 @@ script:
   - make init
   - make build-linux
   - ls bin
+  - echo $PATH
   - cp bin/fileboy-linux-amd64.bin /usr/local/bin/fileboy
   - fileboy version
   - fileboy help
