@@ -11,7 +11,7 @@ dist: bionic # ubuntu 18.04
 
 script:
   - make init
-  - make build-linux
+  - make build-all
   - ls bin
   - echo $PATH
   - cp bin/fileboy-linux-amd64.bin /home/travis/bin/fileboy
