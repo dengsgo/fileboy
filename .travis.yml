@@ -12,7 +12,7 @@ dist: bionic # ubuntu 18.04
 script:
   - make init
   - make build-all
-  - ls bin
+  - ll bin
   - echo $PATH
   - cp bin/fileboy-linux-amd64.bin /home/travis/bin/fileboy
   - fileboy version
@@ -21,6 +21,7 @@ script:
   - cat filegirl.yaml
   - fileboy exec
   - fileboy deamon
-  - cat .fileboy.pid
+  - ll -al .fileboy.pid
+  - ps aux | grep fileboy
   - fileboy stop
 
