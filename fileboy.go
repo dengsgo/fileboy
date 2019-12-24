@@ -76,6 +76,9 @@ func parseConfig() {
 }
 
 func eventDispatcher(event fsnotify.Event) {
+	if event.Name == getPidFile() {
+		return
+	}
 	ext := path.Ext(event.Name)
 	if len(cfg.Monitor.Types) > 0 &&
 		!keyInMonitorTypesMap(".*", cfg) &&
