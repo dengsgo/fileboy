@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"gopkg.in/fsnotify/fsnotify.v1"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -12,6 +10,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"gopkg.in/fsnotify/fsnotify.v1"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -286,8 +287,10 @@ func parseArgs() {
 			return
 		case "version", "v", "-v", "--version":
 			fmt.Println(versionDesc)
-		default:
+		case "help", "--help", "--h", "-h":
 			fmt.Print(helpStr)
+		default:
+			fmt.Println(PreError, "Unknown parameter, use 'fileboy help' to view available commands")
 		}
 		return
 	default:
