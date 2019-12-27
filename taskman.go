@@ -1,9 +1,6 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -64,38 +61,28 @@ func (t *TaskMan) run(cf *changedFile) {
 		t.cmd = exec.Command(carr[0], carr[1:]...)
 		//cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: syscall.CREATE_UNICODE_ENVIRONMENT}
 		t.cmd.Stdin = os.Stdin
-		//cmd.Stdout = os.Stdout
+		t.cmd.Stdout = os.Stdout
 		t.cmd.Stderr = os.Stderr
 		t.cmd.Dir = projectFolder
 		t.cmd.Env = os.Environ()
-		stdout, err := t.cmd.StdoutPipe()
-		if err != nil {
-			log.Println(PreError, err.Error())
-			return
-		}
-		err = t.cmd.Start()
+		err := t.cmd.Start()
 		if err != nil {
 			log.Println(PreError, "run command", carr, "error. ", err)
-		}
-		reader := bufio.NewReader(stdout)
-		for {
-			line, err2 := reader.ReadString('\n')
-			if err2 != nil || io.EOF == err2 {
-				break
-			}
-			fmt.Print(line)
+			break
 		}
 		err = t.cmd.Wait()
 		if err != nil {
-			log.Println(PreWarn, "cmd wait err ", err)
+			log.Println(PreWarn, "command exec failed:", carr, err)
 			break
 		}
 		if t.cmd.Process != nil {
-			if err = t.cmd.Process.Kill(); err != nil {
-				log.Println(PreWarn, "cmd cannot kill, reason:", err)
+			err := t.cmd.Process.Kill()
+			log.Println(t.cmd.ProcessState)
+			if t.cmd.ProcessState != nil && !t.cmd.ProcessState.Exited() {
+				log.Println(PreError, "command cannot stop!", carr, err)
 			}
 		}
 	}
 
-	log.Println("end ")
+	log.Println("EXEC end")
 }
