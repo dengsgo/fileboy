@@ -6,3 +6,4 @@ fileboy-darwin-amd64.bin
 fileboy-linux-amd64.bin
 fileboy-windows-amd64.exe
 ./bin/*
+.fileboy.pid
