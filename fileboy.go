@@ -244,6 +244,7 @@ func watchChangeHandler(event fsnotify.Event) {
 func parseArgs() {
 	switch {
 	case len(os.Args) == 1:
+		show()
 		parseConfig()
 		done := make(chan bool)
 		initWatcher()
@@ -314,7 +315,7 @@ func main() {
 	log.SetPrefix("[FileBoy]: ")
 	log.SetFlags(2)
 	log.SetOutput(os.Stdout)
-	show()
+	// show()
 	var err error
 	projectFolder, err = os.Getwd()
 	if err != nil {
