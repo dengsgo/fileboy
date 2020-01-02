@@ -14,15 +14,15 @@ func getPidFile() string {
 
 func runAsDeamon() (int, error) {
 	if runtime.GOOS == "windows" {
-		logAndExit(PreError, "daemons mode cannot run on windows.")
+		logAndExit("daemons mode cannot run on windows.")
 	}
 	err := stopDeamon()
 	if err != nil {
-		logAndExit(PreError, err)
+		logAndExit(err)
 	}
 	_, err = exec.LookPath("fileboy")
 	if err != nil {
-		logAndExit(PreError, "cannot found `fileboy` command in the PATH")
+		logAndExit("cannot found `fileboy` command in the PATH")
 	}
 	deamon := exec.Command("fileboy")
 	deamon.Dir = projectFolder
@@ -30,7 +30,7 @@ func runAsDeamon() (int, error) {
 	deamon.Stdout = os.Stdout
 	err = deamon.Start()
 	if err != nil {
-		logAndExit(PreError, err)
+		logAndExit(err)
 	}
 	pid := deamon.Process.Pid
 	if pid != 0 {

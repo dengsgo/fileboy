@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 	"os/exec"
 	"sync"
@@ -34,7 +33,7 @@ func newTaskMan(delay int, callUrl string) *TaskMan {
 				if len(t.waitQueue) > 0 {
 					cf := t.waitQueue[len(t.waitQueue)-1]
 					if len(t.waitQueue) > 1 {
-						log.Println("Number of redundant tasks dropped:", len(t.waitQueue)-1)
+						logInfo("Number of redundant tasks dropped:", len(t.waitQueue)-1)
 					}
 					t.waitQueue = []*changedFile{}
 					go t.preRun(cf)
@@ -65,8 +64,8 @@ func (t *TaskMan) Put(cf *changedFile) {
 				t.waitChan <- true
 				return
 			}
-			log.Println("Waitting for the last task to finish")
-			log.Println("Number of waiting tasks:", len(t.waitQueue))
+			logInfo("Waitting for the last task to finish")
+			logInfo("Number of waiting tasks:", len(t.waitQueue))
 		} else {
 			t.preRun(cf)
 		}
@@ -76,19 +75,12 @@ func (t *TaskMan) Put(cf *changedFile) {
 func (t *TaskMan) preRun(cf *changedFile) {
 	if t.cmd != nil && t.cmd.Process != nil {
 		if err := t.cmd.Process.Kill(); err != nil {
-			log.Println("stop old process ")
-			log.Println(PreWarn, "stopped err, reason:", err)
+			logInfo("stop old process ")
+			logWarn("stopped err, reason:", err)
 		}
 	}
 	go t.run(cf)
 	go t.notifier.Put(cf)
-}
-
-func (t *TaskMan) waitFinish() {
-	log.Println("prostate", t.cmd.Process.Pid)
-	if t.cmd.ProcessState != nil && !t.cmd.ProcessState.Exited() {
-
-	}
 }
 
 func (t *TaskMan) run(cf *changedFile) {
@@ -96,7 +88,7 @@ func (t *TaskMan) run(cf *changedFile) {
 	defer t.runLock.Unlock()
 	for i := 0; i < len(cfg.Command.Exec); i++ {
 		carr := cmdParse2Array(cfg.Command.Exec[i], cf)
-		log.Println("EXEC", carr)
+		logInfo("EXEC", carr)
 		t.cmd = exec.Command(carr[0], carr[1:]...)
 		//cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: syscall.CREATE_UNICODE_ENVIRONMENT}
 		t.cmd.Stdin = os.Stdin
@@ -106,19 +98,19 @@ func (t *TaskMan) run(cf *changedFile) {
 		t.cmd.Env = os.Environ()
 		err := t.cmd.Start()
 		if err != nil {
-			log.Println(PreError, "run command", carr, "error. ", err)
+			logError("run command", carr, "error. ", err)
 			break
 		}
 		err = t.cmd.Wait()
 		if err != nil {
-			log.Println(PreWarn, "command exec failed:", carr, err)
+			logWarn("command exec failed:", carr, err)
 			break
 		}
 		if t.cmd.Process != nil {
 			err := t.cmd.Process.Kill()
-			log.Println(t.cmd.ProcessState)
+			logInfo(t.cmd.ProcessState)
 			if t.cmd.ProcessState != nil && !t.cmd.ProcessState.Exited() {
-				log.Println(PreError, "command cannot stop!", carr, err)
+				logError("command cannot stop!", carr, err)
 			}
 		}
 	}
@@ -126,5 +118,5 @@ func (t *TaskMan) run(cf *changedFile) {
 		t.cmd = nil
 		t.waitChan <- true
 	}
-	log.Println("EXEC end")
+	logInfo("EXEC end")
 }

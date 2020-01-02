@@ -81,7 +81,23 @@ func inStrArray(s string, arr []string) bool {
 	return false
 }
 
+func logInfo(v ...interface{}) {
+	v = append([]interface{}{"I:"}, v...)
+	log.Println(v...)
+}
+
+func logWarn(v ...interface{}) {
+	v = append([]interface{}{"W:"}, v...)
+	log.Println(v...)
+}
+
+func logError(v ...interface{}) {
+	v = append([]interface{}{"E:"}, v...)
+	log.Println(v...)
+}
+
 func logAndExit(v ...interface{}) {
+	v = append([]interface{}{"O:"}, v...)
 	log.Println(v...)
 	os.Exit(15)
 }

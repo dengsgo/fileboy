@@ -18,9 +18,6 @@ import (
 const (
 	Version = 1
 
-	PreError = "ERROR:"
-	PreWarn  = "Warn:"
-
 	InstExecWhenStart = "exec-when-start"
 	InstShouldFinish  = "should-finish"
 )
@@ -56,16 +53,16 @@ func parseConfig() {
 	cfg = new(FileGirl)
 	fc, err := ioutil.ReadFile(getFileGirlPath())
 	if err != nil {
-		log.Println(PreError, "The filegirl.yaml file in", projectFolder, "is not exist! ", err)
+		logError("The filegirl.yaml file in", projectFolder, "is not exist! ", err)
 		fmt.Print(firstRunHelp)
 		logAndExit("Fileboy unable to run.")
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		logAndExit(PreError, "Parsed filegirl.yaml failed: ", err)
+		logAndExit("Parsed filegirl.yaml failed: ", err)
 	}
 	if cfg.Core.Version > Version {
-		logAndExit(PreError, "Current fileboy support max version : ", Version)
+		logAndExit("Current fileboy support max version : ", Version)
 	}
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
@@ -108,15 +105,15 @@ func eventDispatcher(event fsnotify.Event) {
 }
 
 func addWatcher() {
-	log.Println("collecting directory information...")
+	logInfo("collecting directory information...")
 	dirsMap := map[string]bool{}
 	for _, dir := range cfg.Monitor.IncludeDirs {
 		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
-			logAndExit(PreError, "filegirl section monitor dirs is error. ", dir)
+			logAndExit("filegirl section monitor dirs is error. ", dir)
 		}
 		if strings.HasPrefix(darr[0], "/") {
-			logAndExit(PreError, "dirs must be relative paths ! err path:", dir)
+			logAndExit("dirs must be relative paths ! err path:", dir)
 		}
 		if darr[0] == "." {
 			if len(darr) == 2 && darr[1] == "*" {
@@ -146,7 +143,7 @@ func addWatcher() {
 	}
 	for _, dir := range cfg.Monitor.ExceptDirs {
 		if dir == "." {
-			logAndExit(PreError, "exceptDirs must is not project root path ! err path:", dir)
+			logAndExit("exceptDirs must is not project root path ! err path:", dir)
 		}
 		p := projectFolder + "/" + dir
 		delete(dirsMap, p)
@@ -155,14 +152,14 @@ func addWatcher() {
 		})
 	}
 	for dir := range dirsMap {
-		log.Println("watcher add -> ", dir)
+		logInfo("watcher add -> ", dir)
 		err := watcher.Add(dir)
 		if err != nil {
-			logAndExit(PreError, err)
+			logAndExit(err)
 		}
 	}
-	log.Println("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
-	log.Println("fileboy is ready.")
+	logInfo("total monitored dirs: " + strconv.Itoa(len(dirsMap)))
+	logInfo("fileboy is ready.")
 	cfg.Monitor.DirsMap = dirsMap
 }
 
@@ -191,7 +188,7 @@ func initWatcher() {
 				if !ok {
 					return
 				}
-				log.Println(PreError, err)
+				logError(err)
 			}
 		}
 	}()
@@ -226,9 +223,9 @@ func watchChangeHandler(event fsnotify.Event) {
 		err := watcher.Add(event.Name)
 		if err == nil {
 			do = true
-			log.Println("watcher add -> ", event.Name)
+			logInfo("watcher add -> ", event.Name)
 		} else {
-			log.Println(PreWarn, "watcher add faild:", event.Name, err)
+			logWarn("watcher add faild:", event.Name, err)
 		}
 	}
 
@@ -241,9 +238,9 @@ func watchChangeHandler(event fsnotify.Event) {
 		_ = watcher.Remove(event.Name)
 		err := watcher.Add(event.Name)
 		if err == nil {
-			log.Println("watcher add -> ", event.Name)
+			logInfo("watcher add -> ", event.Name)
 		} else {
-			log.Println(PreWarn, "watcher add faild:", event.Name, err)
+			logWarn("watcher add faild:", event.Name, err)
 		}
 	}
 }
@@ -267,30 +264,30 @@ func parseArgs() {
 		case "deamon":
 			pid, err := runAsDeamon()
 			if err != nil {
-				logAndExit(PreError, err)
+				logAndExit(err)
 			}
-			log.Println("PID:", pid)
-			log.Println("fileboy is ready. the main process will run as a daemons")
+			logInfo("PID:", pid)
+			logInfo("fileboy is ready. the main process will run as a daemons")
 			return
 		case "stop":
 			err := stopDeamon()
 			if err != nil {
-				logAndExit(PreError, err)
+				logAndExit(err)
 			}
-			log.Println("fileboy daemon is stoped.")
+			logInfo("fileboy daemon is stoped.")
 			return
 		case "init":
 			_, err := ioutil.ReadFile(getFileGirlPath())
 			if err == nil {
-				log.Println(PreError, "Profile filegirl.yaml already exists.")
+				logError("Profile filegirl.yaml already exists.")
 				logAndExit("If you want to regenerate filegirl.yaml, delete it first")
 			}
 			err = ioutil.WriteFile(getFileGirlPath(), []byte(exampleFileGirl), 0644)
 			if err != nil {
-				log.Println(PreError, "Profile filegirl.yaml create failed! ", err)
+				logError("Profile filegirl.yaml create failed! ", err)
 				return
 			}
-			log.Println("Profile filegirl.yaml created ok")
+			logInfo("Profile filegirl.yaml created ok")
 			return
 		case "exec":
 			parseConfig()
@@ -301,7 +298,7 @@ func parseArgs() {
 		case "help", "--help", "--h", "-h":
 			fmt.Print(helpStr)
 		default:
-			fmt.Println(PreError, "Unknown parameter, use 'fileboy help' to view available commands")
+			logAndExit("Unknown parameter, use 'fileboy help' to view available commands")
 		}
 		return
 	default:

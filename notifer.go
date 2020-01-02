@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -35,7 +34,7 @@ func newNetNotifier(callUrl string) *NetNotifier {
 
 func (n *NetNotifier) Put(cf *changedFile) {
 	if !n.CanPost {
-		log.Println(PreWarn, "notifier call url ignore. ", n.CallUrl)
+		logWarn("notifier call url ignore. ", n.CallUrl)
 		return
 	}
 	n.dispatch(&postParams{
@@ -50,7 +49,7 @@ func (n *NetNotifier) Put(cf *changedFile) {
 func (n *NetNotifier) dispatch(params *postParams) {
 	b, err := json.Marshal(params)
 	if err != nil {
-		log.Println(PreError, "json.Marshal n.params. ", err)
+		logError("json.Marshal n.params. ", err)
 		return
 	}
 	client := &http.Client{
@@ -58,14 +57,14 @@ func (n *NetNotifier) dispatch(params *postParams) {
 	}
 	req, err := http.NewRequest("POST", n.CallUrl, bytes.NewBuffer(b))
 	if err != nil {
-		log.Println(PreError, "http.NewRequest. ", err)
+		logError("http.NewRequest. ", err)
 		return
 	}
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
 	req.Header.Set("User-Agent", "FileBoy Net Notifier v1.12")
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Println(PreError, "notifier call failed. err:", err)
+		logError("notifier call failed. err:", err)
 		return
 	}
 	defer func() {
@@ -76,5 +75,5 @@ func (n *NetNotifier) dispatch(params *postParams) {
 	if resp.StatusCode >= 300 {
 		// todo retry???
 	}
-	log.Println("notifier done .")
+	logInfo("notifier done .")
 }
