@@ -49,7 +49,7 @@ monitor:
 # 命令
 command:
     # 特殊指令 //TODO next release support
-    # 可以通过特殊的指令来控制 command 的行为，指令可以有多个
+    # 可以通过预定义的指令来控制 command 的行为，指令可以有多个
     #   exec-when-start    fileboy启动就绪后，自动执行一次 'exec' 定义的命令
     #   should-finish      触发执行 'exec' 时(C)，如果上一次的命令(L)未退出（还在执行），会等待 L 退出，直到有明确 exit code 才会开始执行本次命令。
     #                      在等待 L 退出时，又有新事件触发了命令执行(N)，则 C 执行取消，只会保留最后一次的 N 执行

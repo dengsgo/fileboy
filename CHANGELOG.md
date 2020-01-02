@@ -1,8 +1,12 @@
 2020.01.02
 
-- 增加 指令配置项 `instruction`, 可以通过特殊的指令来控制 command 的行为  
+- 增加 指令配置项 `instruction`, 可以通过预定义的指令来控制 command 的行为  
 - 增加 `should-finish` 指令  
 - 增加 `exec-when-start` 指令   
+- 增加 `ignore-warn` 指令   
+- 增加 `ignore-info` 指令   
+- 增加 `ignore-stdout` 指令   
+- 增加 `ignore-exec-error` 指令   
 
 
 2019.12.28
