@@ -47,7 +47,7 @@ func newTaskMan(delay int, callUrl string) *TaskMan {
 
 func (t *TaskMan) Put(cf *changedFile) {
 	if t.delay < 1 {
-		t.preRun(cf)
+		t.dispatcher(cf)
 		return
 	}
 	t.putLock.Lock()
@@ -58,18 +58,22 @@ func (t *TaskMan) Put(cf *changedFile) {
 		if t.lastTaskId > cf.Changed {
 			return
 		}
-		if keyInInstruction(InstShouldFinish) {
-			t.waitQueue = append(t.waitQueue, cf)
-			if t.cmd == nil {
-				t.waitChan <- true
-				return
-			}
-			logInfo("Waitting for the last task to finish")
-			logInfo("Number of waiting tasks:", len(t.waitQueue))
-		} else {
-			t.preRun(cf)
-		}
+		t.dispatcher(cf)
 	}()
+}
+
+func (t *TaskMan) dispatcher(cf *changedFile) {
+	if keyInInstruction(InstShouldFinish) {
+		t.waitQueue = append(t.waitQueue, cf)
+		if t.cmd == nil {
+			t.waitChan <- true
+			return
+		}
+		logInfo("Waitting for the last task to finish")
+		logInfo("Number of waiting tasks:", len(t.waitQueue))
+	} else {
+		t.preRun(cf)
+	}
 }
 
 func (t *TaskMan) preRun(cf *changedFile) {
