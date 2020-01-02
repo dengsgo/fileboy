@@ -13,6 +13,11 @@ func keyInMonitorTypesMap(k string, cfg *FileGirl) bool {
 	return ok
 }
 
+func keyInInstruction(k string) bool {
+	_, ok := cfg.Command.InstructionMap[k]
+	return ok
+}
+
 func cmdParse2Array(s string, cf *changedFile) []string {
 	a := strings.Split(s, " ")
 	r := make([]string, 0)

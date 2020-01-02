@@ -18,8 +18,12 @@ type FileGirl struct {
 		IncludeDirsRec map[string]bool `yaml:"-"`
 	}
 	Command struct {
+		Instruction     []string `yaml:"instruction"`
 		Exec            []string `yaml:"exec"`
 		DelayMillSecond int      `yaml:"delayMillSecond"`
+
+		// convert to
+		InstructionMap map[string]bool `yaml:"-"`
 	}
 	Notifier struct {
 		CallUrl string `yaml:"callUrl"`

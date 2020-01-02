@@ -15,13 +15,35 @@ type TaskMan struct {
 	notifier   *NetNotifier
 	putLock    sync.Mutex
 	runLock    sync.Mutex
+
+	waitChan  chan bool
+	waitQueue []*changedFile
 }
 
 func newTaskMan(delay int, callUrl string) *TaskMan {
-	return &TaskMan{
-		delay:    delay,
-		notifier: newNetNotifier(callUrl),
+	t := &TaskMan{
+		delay:     delay,
+		notifier:  newNetNotifier(callUrl),
+		waitChan:  make(chan bool, 1),
+		waitQueue: []*changedFile{},
 	}
+	if keyInInstruction(InstShouldFinish) {
+		go func() {
+			for {
+				<-t.waitChan
+				if len(t.waitQueue) > 0 {
+					cf := t.waitQueue[len(t.waitQueue)-1]
+					if len(t.waitQueue) > 1 {
+						log.Println("Number of redundant tasks dropped:", len(t.waitQueue)-1)
+					}
+					t.waitQueue = []*changedFile{}
+					go t.preRun(cf)
+				}
+			}
+		}()
+	}
+
+	return t
 }
 
 func (t *TaskMan) Put(cf *changedFile) {
@@ -37,19 +59,36 @@ func (t *TaskMan) Put(cf *changedFile) {
 		if t.lastTaskId > cf.Changed {
 			return
 		}
-		t.preRun(cf)
+		if keyInInstruction(InstShouldFinish) {
+			t.waitQueue = append(t.waitQueue, cf)
+			if t.cmd == nil {
+				t.waitChan <- true
+				return
+			}
+			log.Println("Waitting for the last task to finish")
+			log.Println("Number of waiting tasks:", len(t.waitQueue))
+		} else {
+			t.preRun(cf)
+		}
 	}()
 }
 
 func (t *TaskMan) preRun(cf *changedFile) {
 	if t.cmd != nil && t.cmd.Process != nil {
-		log.Println("stop old process ")
 		if err := t.cmd.Process.Kill(); err != nil {
+			log.Println("stop old process ")
 			log.Println(PreWarn, "stopped err, reason:", err)
 		}
 	}
 	go t.run(cf)
 	go t.notifier.Put(cf)
+}
+
+func (t *TaskMan) waitFinish() {
+	log.Println("prostate", t.cmd.Process.Pid)
+	if t.cmd.ProcessState != nil && !t.cmd.ProcessState.Exited() {
+
+	}
 }
 
 func (t *TaskMan) run(cf *changedFile) {
@@ -83,6 +122,9 @@ func (t *TaskMan) run(cf *changedFile) {
 			}
 		}
 	}
-
+	if keyInInstruction(InstShouldFinish) {
+		t.cmd = nil
+		t.waitChan <- true
+	}
 	log.Println("EXEC end")
 }

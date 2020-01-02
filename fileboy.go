@@ -20,6 +20,9 @@ const (
 
 	PreError = "ERROR:"
 	PreWarn  = "Warn:"
+
+	InstExecWhenStart = "exec-when-start"
+	InstShouldFinish  = "should-finish"
 )
 
 var (
@@ -69,11 +72,15 @@ func parseConfig() {
 	cfg.Monitor.IncludeDirsMap = map[string]bool{}
 	cfg.Monitor.ExceptDirsMap = map[string]bool{}
 	cfg.Monitor.IncludeDirsRec = map[string]bool{}
+	cfg.Command.InstructionMap = map[string]bool{}
 	// convert to map
 	for _, v := range cfg.Monitor.Types {
 		cfg.Monitor.TypesMap[v] = true
 	}
-	log.Println(cfg)
+	for _, v := range cfg.Command.Instruction {
+		cfg.Command.InstructionMap[v] = true
+	}
+	log.Printf("%+v", cfg)
 }
 
 func eventDispatcher(event fsnotify.Event) {
@@ -249,6 +256,9 @@ func parseArgs() {
 		done := make(chan bool)
 		initWatcher()
 		defer watcher.Close()
+		if keyInInstruction(InstExecWhenStart) {
+			taskMan.run(new(changedFile))
+		}
 		<-done
 		return
 	case len(os.Args) > 1:
