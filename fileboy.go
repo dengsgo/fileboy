@@ -270,15 +270,15 @@ func parseArgs() {
 			if err != nil {
 				logAndExit(err)
 			}
-			logInfo("PID:", pid)
-			logInfo("fileboy is ready. the main process will run as a daemons")
+			logUInfo("PID:", pid)
+			logUInfo("fileboy is ready. the main process will run as a daemons")
 			return
 		case "stop":
 			err := stopDeamon()
 			if err != nil {
 				logAndExit(err)
 			}
-			logInfo("fileboy daemon is stoped.")
+			logUInfo("fileboy daemon is stoped.")
 			return
 		case "init":
 			_, err := ioutil.ReadFile(getFileGirlPath())
@@ -291,7 +291,7 @@ func parseArgs() {
 				logError("Profile filegirl.yaml create failed! ", err)
 				return
 			}
-			logInfo("Profile filegirl.yaml created ok")
+			logUInfo("Profile filegirl.yaml created ok")
 			return
 		case "exec":
 			parseConfig()

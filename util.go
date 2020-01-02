@@ -85,6 +85,10 @@ func logInfo(v ...interface{}) {
 	if keyInInstruction(InstIgnoreInfo) {
 		return
 	}
+	logUInfo(v...)
+}
+
+func logUInfo(v ...interface{}) {
 	v = append([]interface{}{"I:"}, v...)
 	log.Println(v...)
 }
