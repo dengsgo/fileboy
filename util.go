@@ -82,11 +82,17 @@ func inStrArray(s string, arr []string) bool {
 }
 
 func logInfo(v ...interface{}) {
+	if keyInInstruction(InstIgnoreInfo) {
+		return
+	}
 	v = append([]interface{}{"I:"}, v...)
 	log.Println(v...)
 }
 
 func logWarn(v ...interface{}) {
+	if keyInInstruction(InstIgnoreWarn) {
+		return
+	}
 	v = append([]interface{}{"W:"}, v...)
 	log.Println(v...)
 }

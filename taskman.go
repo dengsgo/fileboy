@@ -93,17 +93,26 @@ func (t *TaskMan) run(cf *changedFile) {
 		//cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: syscall.CREATE_UNICODE_ENVIRONMENT}
 		t.cmd.Stdin = os.Stdin
 		t.cmd.Stdout = os.Stdout
+		if keyInInstruction(InstIgnoreStdout) {
+			t.cmd.Stdout = nil
+		}
 		t.cmd.Stderr = os.Stderr
 		t.cmd.Dir = projectFolder
 		t.cmd.Env = os.Environ()
 		err := t.cmd.Start()
 		if err != nil {
 			logError("run command", carr, "error. ", err)
+			if keyInInstruction(InstIgnoreExecError) {
+				continue
+			}
 			break
 		}
 		err = t.cmd.Wait()
 		if err != nil {
 			logWarn("command exec failed:", carr, err)
+			if keyInInstruction(InstIgnoreExecError) {
+				continue
+			}
 			break
 		}
 		if t.cmd.Process != nil {

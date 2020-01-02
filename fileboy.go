@@ -18,8 +18,12 @@ import (
 const (
 	Version = 1
 
-	InstExecWhenStart = "exec-when-start"
-	InstShouldFinish  = "should-finish"
+	InstExecWhenStart   = "exec-when-start"
+	InstShouldFinish    = "should-finish"
+	InstIgnoreWarn      = "ignore-warn"
+	InstIgnoreInfo      = "ignore-info"
+	InstIgnoreStdout    = "ignore-stdout"
+	InstIgnoreExecError = "ignore-exec-error"
 )
 
 var (
