@@ -1,3 +1,17 @@
+2020.01.02
+
+- 增加 指令配置项 `instruction`, 可以通过特殊的指令来控制 command 的行为  
+- 增加 `should-finish` 指令  
+- 增加 `exec-when-start` 指令   
+
+
+2019.12.28
+
+- 增加 `deamon`命令，支持以守护进程的方式运行在后台 **Unix only**  
+- 增加 `stop`命令，用来停止 deamon 进程 **Unix only**  
+- 优化 exec stdout  
+
+
 ### Release v1.12
 
 2019.12.18  
