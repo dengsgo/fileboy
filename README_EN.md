@@ -127,6 +127,19 @@ command:
     # If this feature is not required, set to 0
     delayMillSecond: 2000
 
+    # 特殊指令
+    # 可以通过预定义的指令来控制 command 的行为，指令可以有多个
+    #   exec-when-start    fileboy启动就绪后，自动执行一次 'exec' 定义的命令
+    #   should-finish      触发执行 'exec' 时(C)，如果上一次的命令(L)未退出（还在执行），会等待 L 退出，直到有明确 exit code 才会开始执行本次命令。
+    #                      在等待 L 退出时，又有新事件触发了命令执行(N)，则 C 执行取消，只会保留最后一次的 N 执行
+    #   ignore-stdout      执行 'exec' 产生的 stdout 会被丢弃
+    #   ignore-warn        fileboy 自身的 warn 信息会被丢弃
+    #   ignore-info        fileboy 自身的 info 信息会被丢弃
+    #   ignore-exec-error  执行 'exec' 出错仍继续执行下面的命令而不退出
+    instruction:
+        #- should-finish
+        #- exec-when-start
+
 notifier:
     # file changes send requests to the URL (POST JSON text data)
     # the timing of triggering the request is consistent with executing the command command
