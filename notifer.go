@@ -61,7 +61,7 @@ func (n *NetNotifier) dispatch(params *postParams) {
 		return
 	}
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
-	req.Header.Set("User-Agent", "FileBoy Net Notifier v1.12")
+	req.Header.Set("User-Agent", "FileBoy Net Notifier v1.15")
 	resp, err := client.Do(req)
 	if err != nil {
 		logError("notifier call failed. err:", err)
