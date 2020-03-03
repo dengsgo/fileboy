@@ -210,11 +210,9 @@ fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中
 
 > 排名不分先后
 
-[@dengsgo](https://www.yoytang.com)  <dengsgo@gmail.com>  
-
-[@itwesley](https://github.com/itwesley)  <wcshen1126@gmail.com>  
-
-[@jason-gao](https://github.com/jason-gao)  <3048789891@qq.com>  
+[@dengsgo](https://www.yoytang.com) . <dengsgo@gmail.com>  
+[@itwesley](https://github.com/itwesley) . <wcshen1126@gmail.com>  
+[@jason-gao](https://github.com/jason-gao) . <3048789891@qq.com>  
 
 ### 感谢支持  
 
