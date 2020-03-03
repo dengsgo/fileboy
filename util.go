@@ -14,7 +14,7 @@ func keyInMonitorTypesMap(k string, cfg *FileGirl) bool {
 }
 
 func keyInInstruction(k string) bool {
-	_, ok := cfg.Command.InstructionMap[k]
+	_, ok := cfg.InstructionMap[k]
 	return ok
 }
 

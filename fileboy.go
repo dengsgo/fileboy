@@ -73,13 +73,13 @@ func parseConfig() {
 	cfg.Monitor.IncludeDirsMap = map[string]bool{}
 	cfg.Monitor.ExceptDirsMap = map[string]bool{}
 	cfg.Monitor.IncludeDirsRec = map[string]bool{}
-	cfg.Command.InstructionMap = map[string]bool{}
+	cfg.InstructionMap = map[string]bool{}
 	// convert to map
 	for _, v := range cfg.Monitor.Types {
 		cfg.Monitor.TypesMap[v] = true
 	}
-	for _, v := range cfg.Command.Instruction {
-		cfg.Command.InstructionMap[v] = true
+	for _, v := range cfg.Instruction {
+		cfg.InstructionMap[v] = true
 	}
 	log.Printf("%+v", cfg)
 }
