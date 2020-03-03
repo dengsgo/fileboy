@@ -164,3 +164,10 @@ instruction:
 
 [@jason-gao](https://github.com/jason-gao)  <3048789891@qq.com>  
 
+
+### THANKS
+
+|   |
+| ------------ |
+| <a href="https://www.jetbrains.com/?from=fileboy"><img src="./resources/jetbrains.png" width=140></a> |
+
