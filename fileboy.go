@@ -57,16 +57,16 @@ func parseConfig() {
 	cfg = new(FileGirl)
 	fc, err := ioutil.ReadFile(getFileGirlPath())
 	if err != nil {
-		logError("The filegirl.yaml file in", projectFolder, "is not exist! ", err)
+		logError("the filegirl.yaml file in", projectFolder, "is not exist! ", err)
 		fmt.Print(firstRunHelp)
-		logAndExit("Fileboy unable to run.")
+		logAndExit("fileboy unable to run.")
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		logAndExit("Parsed filegirl.yaml failed: ", err)
+		logAndExit("parsed filegirl.yaml failed: ", err)
 	}
 	if cfg.Core.Version > Version {
-		logAndExit("Current fileboy support max version : ", Version)
+		logAndExit("current fileboy support max version : ", Version)
 	}
 	// init map
 	cfg.Monitor.TypesMap = map[string]bool{}
@@ -283,15 +283,15 @@ func parseArgs() {
 		case "init":
 			_, err := ioutil.ReadFile(getFileGirlPath())
 			if err == nil {
-				logError("Profile filegirl.yaml already exists.")
-				logAndExit("If you want to regenerate filegirl.yaml, delete it first")
+				logError("profile filegirl.yaml already exists.")
+				logAndExit("delete it first when you want to regenerate filegirl.yaml")
 			}
 			err = ioutil.WriteFile(getFileGirlPath(), []byte(exampleFileGirl), 0644)
 			if err != nil {
-				logError("Profile filegirl.yaml create failed! ", err)
+				logError("profile filegirl.yaml create failed! ", err)
 				return
 			}
-			logUInfo("Profile filegirl.yaml created ok")
+			logUInfo("profile filegirl.yaml created ok")
 			return
 		case "exec":
 			parseConfig()
@@ -302,11 +302,11 @@ func parseArgs() {
 		case "help", "--help", "--h", "-h":
 			fmt.Print(helpStr)
 		default:
-			logAndExit("Unknown parameter, use 'fileboy help' to view available commands")
+			logAndExit("unknown parameter, use 'fileboy help' to view available commands")
 		}
 		return
 	default:
-		logAndExit("Unknown parameters, use `fileboy help` show help info.")
+		logAndExit("unknown parameters, use `fileboy help` show help info.")
 	}
 }
 

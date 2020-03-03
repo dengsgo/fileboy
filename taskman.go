@@ -33,7 +33,7 @@ func newTaskMan(delay int, callUrl string) *TaskMan {
 				if len(t.waitQueue) > 0 {
 					cf := t.waitQueue[len(t.waitQueue)-1]
 					if len(t.waitQueue) > 1 {
-						logInfo("Number of redundant tasks dropped:", len(t.waitQueue)-1)
+						logInfo("redundant tasks dropped:", len(t.waitQueue)-1)
 					}
 					t.waitQueue = []*changedFile{}
 					go t.preRun(cf)
@@ -69,8 +69,8 @@ func (t *TaskMan) dispatcher(cf *changedFile) {
 			t.waitChan <- true
 			return
 		}
-		logInfo("Waitting for the last task to finish")
-		logInfo("Number of waiting tasks:", len(t.waitQueue))
+		logInfo("waitting for the last task to finish")
+		logInfo("waiting tasks:", len(t.waitQueue))
 	} else {
 		t.preRun(cf)
 	}
