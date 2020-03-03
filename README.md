@@ -216,3 +216,9 @@ fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中
 
 [@jason-gao](https://github.com/jason-gao)  <3048789891@qq.com>  
 
+### 感谢支持  
+
+|   |
+| ------------ |
+| <a href="https://www.jetbrains.com/?from=fileboy"><img src="./resources/jetbrains.png" width=140></a> |
+
