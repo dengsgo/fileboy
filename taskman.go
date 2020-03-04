@@ -113,7 +113,7 @@ func (t *TaskMan) run(cf *changedFile) {
 		}
 		err = t.cmd.Wait()
 		if err != nil {
-			logWarn("command exec failed:", carr, err)
+			logError("command exec failed:", carr, err)
 			if keyInInstruction(InstIgnoreExecError) {
 				continue
 			}
