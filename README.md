@@ -17,6 +17,7 @@ fileboy，文件变更监听通知系统，使用 Go 编写。
 - 命令支持变量占位符  
 - 支持冗余任务丢弃，自定义冗余任务范围  
 - 支持 http 通知  
+- 高级指令用法  
 - 更多...  
 
 ## 编译环境    
@@ -160,38 +161,26 @@ instruction:
     - ignore-warn
 ```
 
-### TODO
-
-- [x] 命令支持变量占位符  
-- [x] 支持多命令  
-- [x] 支持监听指定文件夹  
-- [x] 支持不监听指定文件夹  
-- [x] 支持监听指定后缀文件  
-- [x] 支持自定事件监听  
-- [x] 支持 http 通知  
-- [x] 支持冗余任务丢弃  
-- [ ] 支持 http 合并任务的通知  
-
 ## QA
 
-#### 很多框架都自带了 hot reload 的功能，为什么还要单独写个 fileboy 呢？  
+### 很多框架都自带了 hot reload 的功能，为什么还要单独写个 fileboy 呢？  
 
 这个是一款通用的 hot reload 的软件，理论上适用于任何需要 hot reload 的场景，并不局限于语言层面上。只要灵活的配置 `filegirl.yaml`文件就行了。  
 
-#### fileboy 可以应用在那些具体的场景？  
+### fileboy 可以应用在那些具体的场景？  
 
 在开发中，我们很需要一款可以帮助我们自动打包编译的工具，那 fileboy 就非常适合这样的场景。比如 go 项目的热编译，让我们可以边修改代码边运行得到反馈。又比如 PHP Swoole 框架，由于常驻进程的原因，无法更改代码立即reload，使用 fileboy 就可以辅助做到传统 PHP 开发的体验。  
 对于一些需要监控文件日志或者配置变动的场景， fileboy 同样适合。你可以事先编写好相应的通知报警脚本，然后定义`filegirl.yaml`中的`command`命令，交由 fileboy 自动运行监控报警。  
 
-#### 通知器在什么时候会发送 http 请求 ?
+### 通知器在什么时候会发送 http 请求 ?
 
 通知器发送 http 通知的前提是在配置文件中设置了 `callUrl` 参数（不为空即为已设置）。触发请求的时机和执行 command 命令是一致的，`command -> delayMillSecond` 参数对于触发器同样有效。请求超时默认15秒.  
 
-#### idea 下更改文件，为什么会执行两次或者多次 command ?
+### idea 下更改文件，为什么会执行两次或者多次 command ?
 
 由于 idea 系列软件特殊的文件保存策略，他会自动创建一些临时文件，并且在需要时多次重写文件，所以有时反映在文件上就是有多次的更改，所以会出现这种情况。1.5之后的版本增加了 `delayMillSecond` 参数，可以解决这个问题。  
 
-#### filegirl.yaml 里面的 command 如何配置复杂命令？  
+### filegirl.yaml 里面的 command 如何配置复杂命令？  
 
 fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中不能有""符号或者有空格。如：  
 `go build`:支持；  
@@ -200,23 +189,21 @@ fileboy 目前支持 `命令 + 参数`这种形式的 command，而且 参数中
 `cat a.txt | grep "q" | wc -l`:不支持  
 对于不支持的命令，可以把它写到一个文件里，然后在 command 中执行这个文件来解决。  
 
-#### 为什么起名为 fileboy，又把配置名叫做 filegirl ？
+### 为什么起名为 fileboy，又把配置名叫做 filegirl ？
 
 因为爱情~~ (◡ᴗ◡✿)  
 
 
 
-### 贡献者
+## 贡献者
 
-> 排名不分先后
+|   |   |   |
+| ------------ | ------------ | ------------ |
+| <a href="https://github.com/dengsgo"><img src="https://avatars1.githubusercontent.com/u/7929002?s=460&v=4" width=64 style="border-radius:45px;" /></a> | <a href="https://github.com/jason-gao"><img src="https://avatars1.githubusercontent.com/u/9896574?s=460&v=4" width=64 style="border-radius:45px;" /></a> | <a href="https://github.com/itwesley"><img src="https://avatars1.githubusercontent.com/u/1928721?s=460&v=4" width=64 style="border-radius:45px;" /></a> |
 
-[@dengsgo](https://www.yoytang.com) . <dengsgo@gmail.com>  
-[@itwesley](https://github.com/itwesley) . <wcshen1126@gmail.com>  
-[@jason-gao](https://github.com/jason-gao) . <3048789891@qq.com>  
-
-### 感谢支持  
+## 感谢支持  
 
 |   |
 | ------------ |
-| <a href="https://www.jetbrains.com/?from=fileboy"><img src="./resources/jetbrains.png" width=140></a> |
+| <a href="https://www.jetbrains.com/?from=fileboy"><img src="./resources/jetbrains.png" width=140 /></a> |
 

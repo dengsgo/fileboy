@@ -17,6 +17,7 @@ For Hot Reload scenarios (typically for developing go projects without having to
 - Command support variable placeholders  
 - Supporting redundant task discarding and customizing redundant task scope  
 - Supporting HTTP notifications  
+- Advanced instruction usage  
 - more...  
 
 ## COMPILE
@@ -156,14 +157,15 @@ instruction:
     - ignore-warn
 ```
 
-### CONTRIBUTOR
+## CONTRIBUTOR
 
-[@dengsgo](https://www.yoytang.com) . <dengsgo@gmail.com>  
-[@itwesley](https://github.com/itwesley) . <wcshen1126@gmail.com>  
-[@jason-gao](https://github.com/jason-gao) . <3048789891@qq.com>  
+|   |   |   |
+| ------------ | ------------ | ------------ |
+| <a href="https://github.com/dengsgo"><img src="https://avatars1.githubusercontent.com/u/7929002?s=460&v=4" width=64 style="border-radius:45px;" /></a> | <a href="https://github.com/jason-gao"><img src="https://avatars1.githubusercontent.com/u/9896574?s=460&v=4" width=64 style="border-radius:45px;" /></a> | <a href="https://github.com/itwesley"><img src="https://avatars1.githubusercontent.com/u/1928721?s=460&v=4" width=64 style="border-radius:45px;" /></a> |
 
 
-### THANKS
+
+## THANKS
 
 |   |
 | ------------ |
