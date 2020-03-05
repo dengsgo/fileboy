@@ -22,7 +22,7 @@ For Hot Reload scenarios (typically for developing go projects without having to
 
 ## COMPILE
 
-go version 1.13   
+Go >= 1.13   
 
 ## CHANGELOG  
 
@@ -42,9 +42,9 @@ Download the compiled binary file of the corresponding platform, rename it `file
 
 Clone project, enter the project directory, run the command:  
 ```shell
+export GO111MODULE=on  
 ## installation dependency
-go get-u gopkg.in/fsnotify/fsnotify.v1
-go get-u gopkg.in/yaml.v2
+go get-u 
 ## compile
 go build
 ## run

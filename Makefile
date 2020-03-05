@@ -10,7 +10,7 @@
 
 # make build-start-mac 编译+启动
 init:
-	 go get -u 
+	 go get -u
 
 build-mac: ;@echo "编译-mac版";
 	CGO_ENABLED=0 GOARCH=amd64 GOOS=darwin go build -ldflags "-s -w" -o ./bin/fileboy-darwin-amd64.bin

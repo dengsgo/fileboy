@@ -22,7 +22,7 @@ fileboy，文件变更监听通知系统，使用 Go 编写。
 
 ## 编译环境    
 
-go version 1.13   
+Go >= 1.13   
 
 ## 更新日志  
 
@@ -40,10 +40,12 @@ Gitee:  [dowmload v1.15](https://gitee.com/dengsgo/fileboy/releases)
 ### 源码编译   
 
 clone 该项目，进入主目录，运行命令:  
-```shell
+```bash
+## 确保本地 Go 启用 modules  
+export GO111MODULE=on  
+go env -w GOPROXY=https://goproxy.io,direct
 ## 安装依赖
-go get -u gopkg.in/fsnotify/fsnotify.v1
-go get -u gopkg.in/yaml.v2
+go get -u 
 ## 编译
 go build
 ## 运行
