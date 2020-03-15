@@ -33,8 +33,7 @@ jobs:
     
     - name: Use
       run: |
-        echo $PATH
-        cp fileboy /usr/local/bin/
+        export PATH=/home/runner/work/fileboy/fileboy:$PATH
         fileboy version
         fileboy help
         fileboy init
