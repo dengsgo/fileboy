@@ -33,6 +33,7 @@ jobs:
     
     - name: Use
       run: |
+        echo $PATH
         cp fileboy /usr/local/bin/
         fileboy version
         fileboy help
