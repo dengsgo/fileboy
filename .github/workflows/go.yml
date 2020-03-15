@@ -33,13 +33,13 @@ jobs:
     
     - name: Use
       run: |
-        - cp fileboy /usr/local/bin/
-        - fileboy version
-        - fileboy help
-        - fileboy init
-        - cat filegirl.yaml
-        - fileboy exec
-        - fileboy deamon
-        - ls -al .fileboy.pid
-        - ps aux | grep fileboy
-        - fileboy stop
+        cp fileboy /usr/local/bin/
+        fileboy version
+        fileboy help
+        fileboy init
+        cat filegirl.yaml
+        fileboy exec
+        fileboy deamon
+        ls -al .fileboy.pid
+        ps aux | grep fileboy
+        fileboy stop
