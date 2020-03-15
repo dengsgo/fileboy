@@ -1,6 +1,6 @@
 ## 项目说明  
 
-[![Build Status](https://travis-ci.org/dengsgo/fileboy.svg?branch=master)](https://travis-ci.org/dengsgo/fileboy) [![Go Report Card](https://goreportcard.com/badge/github.com/dengsgo/fileboy)](https://goreportcard.com/report/github.com/dengsgo/fileboy)
+![Go](https://github.com/dengsgo/fileboy/workflows/Go/badge.svg?branch=master) [![Build Status](https://travis-ci.org/dengsgo/fileboy.svg?branch=master)](https://travis-ci.org/dengsgo/fileboy) [![Go Report Card](https://goreportcard.com/badge/github.com/dengsgo/fileboy)](https://goreportcard.com/report/github.com/dengsgo/fileboy)
 
 [简体中文](README.md) | [ENGLISH](README_EN.md)
 
