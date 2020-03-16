@@ -265,8 +265,8 @@ func parseArgs() {
 	case len(os.Args) > 1:
 		c := os.Args[1]
 		switch c {
-		case "deamon":
-			pid, err := runAsDeamon()
+		case "deamon", "daemon":
+			pid, err := runAsDaemon()
 			if err != nil {
 				logAndExit(err)
 			}
@@ -274,7 +274,7 @@ func parseArgs() {
 			logUInfo("fileboy is ready. the main process will run as a daemons")
 			return
 		case "stop":
-			err := stopDeamon()
+			err := stopDaemon()
 			if err != nil {
 				logAndExit(err)
 			}

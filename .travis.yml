@@ -20,7 +20,7 @@ script:
   - fileboy init
   - cat filegirl.yaml
   - fileboy exec
-  - fileboy deamon
+  - fileboy daemon
   - ls -al .fileboy.pid
   - ps aux | grep fileboy
   - fileboy stop

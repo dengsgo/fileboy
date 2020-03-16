@@ -1,5 +1,9 @@
 ### Release v1.15
 
+2020.03.16
+
+- typo deamon->daemon  
+
 2020.03.08
 
 - 优化 指令模式  
