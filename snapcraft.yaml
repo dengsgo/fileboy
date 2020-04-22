@@ -1,0 +1,8 @@
+name: fileboy
+vendor: dengsgo, https://github.com/dengsgo, <dengsgo@yoytang.com>
+summary: File Change Monitoring Notification Tools.
+description: File Change Monitoring Notification Tools. Please Visit https://github.com/dengsgo/fileboy
+version: 1.15
+icon: resources/icon.png
+base: core18
+grade: stable
