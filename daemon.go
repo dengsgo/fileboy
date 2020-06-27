@@ -48,3 +48,9 @@ func stopDaemon() error {
 	os.Remove(getPidFile())
 	return nil
 }
+
+func stopSelf() {
+	pid := os.Getpid()
+	os.Remove(getPidFile())
+	_ = exec.Command("kill", strconv.Itoa(pid)).Run()
+}

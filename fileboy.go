@@ -200,6 +200,15 @@ func initWatcher() {
 }
 
 func watchChangeHandler(event fsnotify.Event) {
+	// stop the fileboy daemon process when the .fileboy.pid file is changed
+	if event.Name == getPidFile() &&
+		(event.Op == fsnotify.Remove ||
+			event.Op == fsnotify.Write ||
+			event.Op == fsnotify.Rename) {
+		logUInfo("exit daemon process")
+		stopSelf()
+		return
+	}
 	if event.Op != fsnotify.Create && event.Op != fsnotify.Rename {
 		return
 	}
