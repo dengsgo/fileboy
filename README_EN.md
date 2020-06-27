@@ -4,7 +4,7 @@
 
 [简体中文](README.md) | [ENGLISH](README_EN.md)
 
-Fileboy, File Change Monitoring Notification System, written with Go.  
+Fileboy, File Change Monitoring Notification Tool Software, written with Go.  
 For Hot Reload scenarios (typically for developing go projects without having to perform go build manually every time; for example, front-end node packaging) or system monitoring.  
 
 ## FEATURES

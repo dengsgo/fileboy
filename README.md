@@ -4,7 +4,7 @@
 
 [简体中文](README.md) | [ENGLISH](README_EN.md)
 
-fileboy，文件变更监听通知系统，使用 Go 编写。  
+fileboy，文件变更监听通知工具，使用 Go 编写。  
 适用于 Hot Reload （典型的如开发go项目，无需每次手动执行 go build；又比如前端 node 打包） 或者 系统监控的场景。  
 
 ## 特性  
