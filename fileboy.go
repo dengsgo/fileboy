@@ -113,6 +113,11 @@ func eventDispatcher(event fsnotify.Event) {
 func addWatcher() {
 	logInfo("collecting directory information...")
 	dirsMap := map[string]bool{}
+	for _, dir := range cfg.Monitor.ExceptDirs {
+		if dir == "." {
+			logAndExit("exceptDirs must is not project root path ! err path:", dir)
+		}
+	}
 	for _, dir := range cfg.Monitor.IncludeDirs {
 		darr := dirParse2Array(dir)
 		if len(darr) < 1 || len(darr) > 2 {
@@ -147,16 +152,7 @@ func addWatcher() {
 		}
 
 	}
-	for _, dir := range cfg.Monitor.ExceptDirs {
-		if dir == "." {
-			logAndExit("exceptDirs must is not project root path ! err path:", dir)
-		}
-		p := projectFolder + "/" + dir
-		delete(dirsMap, p)
-		listFile(p, func(d string) {
-			delete(dirsMap, d)
-		})
-	}
+
 	for dir := range dirsMap {
 		logInfo("watcher add -> ", dir)
 		err := watcher.Add(dir)
@@ -224,13 +220,7 @@ func watchChangeHandler(event fsnotify.Event) {
 			continue
 		}
 		// check exceptDirs
-		has := false
-		for _, v := range cfg.Monitor.ExceptDirs {
-			if strings.HasPrefix(event.Name, projectFolder+"/"+v) {
-				has = true
-			}
-		}
-		if has {
+		if hitDirs(event.Name, &cfg.Monitor.ExceptDirs) {
 			continue
 		}
 

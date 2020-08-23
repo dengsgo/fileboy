@@ -53,11 +53,24 @@ func dirParse2Array(s string) []string {
 	return r
 }
 
+func hitDirs(d string, dirs *[]string) bool {
+	d += "/"
+	for _, v := range *dirs {
+		if strings.HasPrefix(d, projectFolder+"/"+v+"/") {
+			return true
+		}
+	}
+	return false
+}
+
 func listFile(folder string, fun func(string)) {
 	files, _ := ioutil.ReadDir(folder)
 	for _, file := range files {
 		if file.IsDir() {
 			d := folder + "/" + file.Name()
+			if hitDirs(d, &cfg.Monitor.ExceptDirs) {
+				continue
+			}
 			fun(d)
 			listFile(d, fun)
 		}
