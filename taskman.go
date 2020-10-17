@@ -30,14 +30,15 @@ func newTaskMan(delay int, callUrl string) *TaskMan {
 		go func() {
 			for {
 				<-t.waitChan
-				if len(t.waitQueue) > 0 {
-					cf := t.waitQueue[len(t.waitQueue)-1]
-					if len(t.waitQueue) > 1 {
-						logInfo("redundant tasks dropped:", len(t.waitQueue)-1)
-					}
-					t.waitQueue = []*changedFile{}
-					go t.preRun(cf)
+				if len(t.waitQueue) < 1 {
+					return
 				}
+				cf := t.waitQueue[len(t.waitQueue)-1]
+				if len(t.waitQueue) > 1 {
+					logInfo("redundant tasks dropped:", len(t.waitQueue)-1)
+				}
+				t.waitQueue = []*changedFile{}
+				go t.preRun(cf)
 			}
 		}()
 	}
