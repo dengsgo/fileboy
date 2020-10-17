@@ -140,7 +140,7 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.15
+    #    User-Agent: FileBoy Net Notifier v1.16
     #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""

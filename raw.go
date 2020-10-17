@@ -76,7 +76,7 @@ notifier:
     # 请求超时 15 秒
     # POST 格式:
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.15
+    #    User-Agent: FileBoy Net Notifier v1.16
     #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # 例: http://example.com/notifier/fileboy-listener
     # 不启用通知，请留空 ""
@@ -139,13 +139,13 @@ var logo = `
  _____     _  | |      _____   ____)  ) |   | | |___| |
 |  ___)   | | | |     |  ___) |  __  (| |   | |\_____/ 
 | |      _| |_| |_____| |_____| |__)  ) |___| |  ___   
-|_|     (_____)_______)_______)______/ \_____/  (___)   V1.15
+|_|     (_____)_______)_______)______/ \_____/  (___)   V1.16
 `
 var statement = `Dengsgo [dengsgo@gmail.com] Open Source with MIT License`
 
 var versionDesc = `
- Version   fileboy: v1.15    filegirl: v` + strconv.Itoa(Version) + `
-Released   2020.03.08
+ Version   fileboy: v1.16    filegirl: v` + strconv.Itoa(Version) + `
+Released   2020.10.17
  Licence   MIT
   Author   dengsgo [dengsgo@gmail.com]
  Website   https://github.com/dengsgo/fileboy

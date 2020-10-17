@@ -134,7 +134,7 @@ notifier:
     # timeout 15 second
     # POST :
     #    Content-Type: application/json;charset=UTF-8
-    #    User-Agent: FileBoy Net Notifier v1.15
+    #    User-Agent: FileBoy Net Notifier v1.16
     #    Body: {"project_folder":"/project/path","file":"main.go","changed":1576567861913824940,"ext":".go","event":"write"}
     # e.g: http://example.com/notifier/fileboy-listener
     # no notice is enabled. Please leave it blank. ""
