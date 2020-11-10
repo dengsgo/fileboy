@@ -95,7 +95,7 @@ monitor:
     
     # ignore the suffix of the listener file, which changes the file not to execute commands
     # .DS_Store   file changes suffixed with .go not execute commands
-    types:
+    exceptTypes:
         - .DS_Store
 
     # the type of event to listen to. Only when such an event occurs can the command in command be executed
