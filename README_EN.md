@@ -92,6 +92,11 @@ monitor:
     # .*    all file changes execute commands in the command
     types:
         - .go
+    
+    # ignore the suffix of the listener file, which changes the file not to execute commands
+    # .DS_Store   file changes suffixed with .go not execute commands
+    types:
+        - .DS_Store
 
     # the type of event to listen to. Only when such an event occurs can the command in command be executed
     # without this configuration, all events will be monitored by default

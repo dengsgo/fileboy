@@ -6,11 +6,13 @@ type FileGirl struct {
 	}
 	Monitor struct {
 		Types       []string `yaml:"types"`
+		ExceptTypes []string `yaml:"exceptTypes"`
 		IncludeDirs []string `yaml:"includeDirs"`
 		ExceptDirs  []string `yaml:"exceptDirs"`
 		Events      []string `yaml:"events"`
 		// convert to
 		TypesMap       map[string]bool `yaml:"-"`
+		ExceptTypesMap map[string]bool `yaml:"-"`
 		IncludeDirsMap map[string]bool `yaml:"-"`
 		ExceptDirsMap  map[string]bool `yaml:"-"`
 		DirsMap        map[string]bool `yaml:"-"`

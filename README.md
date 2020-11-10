@@ -95,6 +95,11 @@ monitor:
     # .*    所有的文件更改都会执行 command 中的命令
     types:
         - .go
+    
+    # 不监听文件的格式，此类文件更改不会执行 command 中的命令
+    # .DS_Store   后缀为 .DS_Store 的文件更改，不会执行 command 中的命令
+    types:
+        - .DS_Store
 
     # 监听的事件类型，发生此类事件才执行 command 中的命令
     # 没有该配置默认监听所有事件

@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func keyInMonitorTypesMap(k string, cfg *FileGirl) bool {
-	_, ok := cfg.Monitor.TypesMap[k]
+func keyInMonitorTypesMap(k string, maps map[string]bool) bool {
+	_, ok := maps[k]
 	return ok
 }
 
