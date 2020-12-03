@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2020 Author dengsgo<dengsgo@yoytang.com> [https://github.com/dengsgo/fileboy]
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 package main
 
 type FileGirl struct {
