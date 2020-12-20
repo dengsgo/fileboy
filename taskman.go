@@ -35,7 +35,7 @@ func newTaskMan(delay int, callUrl string) *TaskMan {
 			for {
 				<-t.waitChan
 				if len(t.waitQueue) < 1 {
-					return
+					continue // thanks to ehlxr <https://github.com/ehlxr> for the bug
 				}
 				cf := t.waitQueue[len(t.waitQueue)-1]
 				if len(t.waitQueue) > 1 {
