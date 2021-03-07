@@ -56,9 +56,8 @@ func (n *NetNotifier) dispatch(params *postParams) {
 		logError("json.Marshal n.params. ", err)
 		return
 	}
-	client := &http.Client{
-		Timeout: time.Second * 15,
-	}
+	client := http.DefaultClient
+	client.Timeout = time.Second * 15
 	req, err := http.NewRequest("POST", n.CallUrl, bytes.NewBuffer(b))
 	if err != nil {
 		logError("http.NewRequest. ", err)
