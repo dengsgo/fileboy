@@ -35,6 +35,8 @@ const (
 var (
 	projectFolder = "."
 
+	ymlPath = ""
+
 	filegirlYamlName = "filegirl.yaml"
 
 	cfg *FileGirl
@@ -340,8 +342,6 @@ func show() {
 	fmt.Println("")
 	fmt.Println(statement)
 }
-
-var ymlPath = ""
 
 func rebuildArgs() {
 	ymlPath = projectFolder + "/" + filegirlYamlName
