@@ -63,7 +63,7 @@ func parseConfig() {
 	cfg = new(FileGirl)
 	fc, err := ioutil.ReadFile(getFileGirlPath())
 	if err != nil {
-		logError("the filegirl.yaml file in", projectFolder, "is not exist! ", err)
+		logError("the filegirl configuration file is not exist! ", err)
 		fmt.Print(firstRunHelp)
 		logAndExit("fileboy unable to run.")
 	}
@@ -330,7 +330,7 @@ func signalHandler() {
 }
 
 func getFileGirlPath() string {
-	return projectFolder + "/" + filegirlYamlName
+	return ymlPath
 }
 
 func show() {
@@ -339,6 +339,39 @@ func show() {
 	fmt.Println(englishSay[rand.Intn(len(englishSay))])
 	fmt.Println("")
 	fmt.Println(statement)
+}
+
+var ymlPath = ""
+
+func rebuildArgs() {
+	ymlPath = projectFolder + "/" + filegirlYamlName
+	loadI := -1
+	for i, arg := range os.Args {
+		if arg == "-load" || arg == "--load" {
+			loadI = i
+		}
+	}
+	if loadI == -1 {
+		return
+	}
+	if len(os.Args) == loadI+1 {
+		logAndExit("unknown load filepath, use `fileboy help` show help info.")
+	}
+	yp := os.Args[loadI+1]
+	if path.IsAbs(yp) {
+		ymlPath = yp
+	} else {
+		ymlPath = projectFolder + "/" + yp
+	}
+	// rebuild
+	argsCopy := make([]string, len(os.Args))
+	copy(argsCopy, os.Args)
+	os.Args = []string{}
+	for i, v := range argsCopy {
+		if i != loadI && i != loadI+1 {
+			os.Args = append(os.Args, v)
+		}
+	}
 }
 
 func main() {
@@ -352,5 +385,6 @@ func main() {
 		logAndExit(err)
 	}
 	signalHandler()
+	rebuildArgs()
 	parseArgs()
 }
