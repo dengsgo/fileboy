@@ -71,7 +71,7 @@ func parseConfig() {
 	}
 	err = yaml.Unmarshal(fc, cfg)
 	if err != nil {
-		logAndExit("parsed filegirl.yaml failed: ", err)
+		logAndExit("parsed fail ", ymlPath, ":", err)
 	}
 	if cfg.Core.Version > Version {
 		logAndExit("current fileboy support max version : ", Version)
@@ -290,15 +290,15 @@ func parseArgs() {
 		case "init":
 			_, err := ioutil.ReadFile(getFileGirlPath())
 			if err == nil {
-				logError("profile filegirl.yaml already exists.")
-				logAndExit("delete it first when you want to regenerate filegirl.yaml")
+				logError("profile filegirl already exists.")
+				logAndExit("delete it first when you want to regenerate filegirl conf file")
 			}
 			err = ioutil.WriteFile(getFileGirlPath(), []byte(exampleFileGirl), 0644)
 			if err != nil {
-				logError("profile filegirl.yaml create failed! ", err)
+				logError("profile filegirl create failed! ", err)
 				return
 			}
-			logUInfo("profile filegirl.yaml created ok")
+			logUInfo("profile filegirl created ok")
 			return
 		case "exec":
 			parseConfig()

@@ -111,13 +111,13 @@ var firstRunHelp = `第一次运行 fileboy ?
 var helpStr = `fileboy [option]
 Usage of fileboy:
     无参数 
-        读取当前目录下的 filegirl.yaml 配置，开始监听并工作
+        读取 filegirl.yaml 配置，开始监听并工作
     init 
-        初始化 fileboy, 在当前目录生成 filegirl.yaml 配置文件
+        初始化 fileboy, (在当前目录或指定目录)生成 filegirl.yaml 配置文件
     exec 
         尝试运行定义的 command 命令
     daemon 
-        读取当前目录下的 filegirl.yaml 配置，以守护进程的方式运行在后台
+        读取 filegirl.yaml 配置，以守护进程的方式运行在后台
     stop 
         停止守护进程
     version 
