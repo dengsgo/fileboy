@@ -347,7 +347,7 @@ func rebuildArgs() {
 	ymlPath = projectFolder + "/" + filegirlYamlName
 	loadI := -1
 	for i, arg := range os.Args {
-		if arg == "-load" || arg == "--load" {
+		if arg == "-filegirl" || arg == "--filegirl" {
 			loadI = i
 		}
 	}
@@ -355,7 +355,7 @@ func rebuildArgs() {
 		return
 	}
 	if len(os.Args) == loadI+1 {
-		logAndExit("unknown load filepath, use `fileboy help` show help info.")
+		logAndExit("unknown filegirl path, use `fileboy help` show help info.")
 	}
 	yp := os.Args[loadI+1]
 	if path.IsAbs(yp) {
