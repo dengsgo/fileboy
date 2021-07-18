@@ -6,7 +6,13 @@ package main
 
 import "strconv"
 
-var exampleFileGirl string = `# 主配置
+var exampleFileGirl string = `####################
+## 配置文件说明
+## “当前目录”是指运行 fileboy 所在的目录;
+## 使用 -filegirl 命令参数可以指定 fileboy 加载配置的路径，如 "fileboy -filegirl /user/f/go.yml" 或者 "fileboy -filegirl ../../f/go.yml";
+####################
+
+# 主配置
 core:
     # 配置版本号
     version: 1
