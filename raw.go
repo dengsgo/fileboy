@@ -114,8 +114,12 @@ var firstRunHelp = `第一次运行 fileboy ?
 更多信息使用 fileboy help 查看帮助
 `
 
-var helpStr = `fileboy [option]
-Usage of fileboy:
+var helpStr = `fileboy [--filegirl confilePath] [option]
+Global Options:
+    --filegirl    加载指定路径的配置文件. loads the configuration file for the specified path.
+                  配置文件配置的相对路径，是相对于运行 fileboy 所在的目录 
+
+Usage of Fileboy:
     无参数 
         读取 filegirl.yaml 配置，开始监听并工作
     init 
