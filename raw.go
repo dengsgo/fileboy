@@ -8,8 +8,8 @@ import "strconv"
 
 var exampleFileGirl string = `####################
 ## 配置文件说明
-## “当前目录”是指运行 fileboy 所在的目录;
-## 使用 -filegirl 命令参数可以指定 fileboy 加载配置的路径，如 "fileboy -filegirl /user/f/go.yml" 或者 "fileboy -filegirl ../../f/go.yml";
+## 运行 fileboy 所在的路径为工作目录;
+## 使用 -filegirl 命令参数可以加载指定路径的 filegirl 配置（不限定工作目录），如 "fileboy -filegirl /user/f/go.yml" 或者 "fileboy -filegirl ../../f/go.yml";
 ####################
 
 # 主配置
@@ -19,7 +19,7 @@ core:
 
 # 监控配置
 monitor:
-    # 要监听的目录
+    # 要监听的目录。必须是工作目录下的路径
     # test1       监听当前目录下 test1 目录
     # test1/test2 监听当前目录下 test1/test2 目录
     # test1,*     监听当前目录下 test1 目录及其所有子目录（递归）
@@ -27,7 +27,7 @@ monitor:
     includeDirs:
         - .,*
 
-    # 不监听的目录
+    # 不监听的目录。必须是工作目录下的路径
     # .idea   忽略.idea目录及其所有子目录的监听
     exceptDirs:
         - .idea
@@ -114,10 +114,9 @@ var firstRunHelp = `第一次运行 fileboy ?
 更多信息使用 fileboy help 查看帮助
 `
 
-var helpStr = `fileboy [--filegirl confilePath] [option]
+var helpStr = `fileboy [-filegirl confilePath] [option]
 Global Options:
-    --filegirl    加载指定路径的配置文件. loads the configuration file for the specified path.
-                  配置文件配置的相对路径，是相对于运行 fileboy 所在的目录 
+    -filegirl, --filegirl   加载指定路径的配置文件. loads the configuration file for the specified path.
 
 Usage of Fileboy:
     无参数 
