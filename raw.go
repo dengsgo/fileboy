@@ -158,7 +158,7 @@ var statement = `Dengsgo [dengsgo@gmail.com] Open Source with MIT License`
 
 var versionDesc = `
  Version   fileboy: v1.16    filegirl: v` + strconv.Itoa(Version) + `
-Released   2020.12.20
+Released   2022.02.13
  Licence   MIT
   Author   dengsgo [dengsgo@gmail.com]
  Website   https://github.com/dengsgo/fileboy
