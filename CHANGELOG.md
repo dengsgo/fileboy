@@ -1,5 +1,9 @@
 ### Release v1.16
 
+2022.05.04
+
+- 修复 windows使用-filegirl加载配置出错  
+  
 2022.02.13
 
 - 优化 net client  
