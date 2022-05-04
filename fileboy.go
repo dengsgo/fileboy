@@ -358,7 +358,7 @@ func rebuildArgs() {
 		logAndExit("unknown filegirl path, use `fileboy help` show help info.")
 	}
 	yp := os.Args[loadI+1]
-	if path.IsAbs(yp) {
+	if path.IsAbs(yp) || isWindowsPathAbs(yp) {
 		ymlPath = yp
 	} else {
 		ymlPath = projectFolder + "/" + yp

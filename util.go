@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -96,6 +97,10 @@ func inStrArray(s string, arr []string) bool {
 		}
 	}
 	return false
+}
+
+func isWindowsPathAbs(path string) bool {
+	return runtime.GOOS == "windows" && len(path) >= 3 && path[1:3] == ":/"
 }
 
 func logInfo(v ...interface{}) {
