@@ -22,7 +22,7 @@ For Hot Reload scenarios (typically for developing go projects without having to
 
 ## COMPILE
 
-Go >= 1.13   
+Go >= 1.17   
 
 ## CHANGELOG  
 

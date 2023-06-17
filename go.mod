@@ -1,6 +1,6 @@
 module fileboy
 
-go 1.13
+go 1.17
 
 require (
 	golang.org/x/sys v0.9.0 // indirect
