@@ -5,7 +5,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"runtime"
@@ -69,7 +68,7 @@ func hitDirs(d string, dirs *[]string) bool {
 }
 
 func listFile(folder string, fun func(string)) {
-	files, _ := ioutil.ReadDir(folder)
+	files, _ := os.ReadDir(folder)
 	for _, file := range files {
 		if file.IsDir() {
 			d := folder + "/" + file.Name()
