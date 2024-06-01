@@ -6,7 +6,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -63,7 +62,7 @@ type changedFile struct {
 
 func parseConfig() {
 	cfg = new(FileGirl)
-	fc, err := ioutil.ReadFile(getFileGirlPath())
+	fc, err := os.ReadFile(getFileGirlPath())
 	if err != nil {
 		logError("the filegirl configuration file is not exist! ", err)
 		fmt.Print(firstRunHelp)
@@ -216,7 +215,7 @@ func watchChangeHandler(event fsnotify.Event) {
 	if event.Op != fsnotify.Create && event.Op != fsnotify.Rename {
 		return
 	}
-	_, err := ioutil.ReadDir(event.Name)
+	_, err := os.ReadDir(event.Name)
 	if err != nil {
 		return
 	}
@@ -288,12 +287,12 @@ func parseArgs() {
 			logUInfo("fileboy daemon is stoped.")
 			return
 		case "init":
-			_, err := ioutil.ReadFile(getFileGirlPath())
+			_, err := os.ReadFile(getFileGirlPath())
 			if err == nil {
 				logError("profile filegirl already exists.")
 				logAndExit("delete it first when you want to regenerate filegirl conf file")
 			}
-			err = ioutil.WriteFile(getFileGirlPath(), []byte(exampleFileGirl), 0644)
+			err = os.WriteFile(getFileGirlPath(), []byte(exampleFileGirl), 0644)
 			if err != nil {
 				logError("profile filegirl create failed! ", err)
 				return
@@ -337,7 +336,7 @@ func getFileGirlPath() string {
 
 func show() {
 	fmt.Print(logo)
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano())) // rand.Seed is deprecated: As of Go 1.20
 	fmt.Println(englishSay[rand.Intn(len(englishSay))])
 	fmt.Println("")
 	fmt.Println(statement)

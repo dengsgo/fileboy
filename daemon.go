@@ -5,7 +5,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"runtime"
@@ -38,13 +37,13 @@ func runAsDaemon() (int, error) {
 	}
 	pid := daemon.Process.Pid
 	if pid != 0 {
-		ioutil.WriteFile(getPidFile(), []byte(strconv.Itoa(pid)), 0644)
+		os.WriteFile(getPidFile(), []byte(strconv.Itoa(pid)), 0644)
 	}
 	return pid, nil
 }
 
 func stopDaemon() error {
-	bs, err := ioutil.ReadFile(getPidFile())
+	bs, err := os.ReadFile(getPidFile())
 	if err != nil {
 		return nil
 	}
